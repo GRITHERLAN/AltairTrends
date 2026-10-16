@@ -1,0 +1,114 @@
+/* ============================================================
+   responsive.css
+   Ajustes para tablet y móvil (enfoque "de escritorio hacia abajo").
+   Los puntos de corte están en rem (1rem = 10px): 96rem = 960px, 64rem = 640px.
+   ============================================================ */
+
+/* ---------- Tablet ---------- */
+@media (max-width: 96rem) {
+  .kpis {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .producto__rejilla,
+  .contacto__rejilla {
+    grid-template-columns: 1fr;
+  }
+
+  .indicadores-editor__fila {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .indicadores-editor__fila > :last-child {
+    grid-column: 1 / -1;
+  }
+
+  /* La navegación pasa a un menú desplegable. */
+  .cabecera__menu-boton {
+    display: inline-block;
+  }
+
+  .cabecera__nav {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--espacio-4);
+    padding-top: var(--espacio-3);
+  }
+
+  .cabecera__nav--abierta {
+    display: flex;
+  }
+
+  .cabecera__lista {
+    flex-direction: column;
+    gap: var(--espacio-2);
+  }
+
+  .cabecera__sesion {
+    flex-wrap: wrap;
+  }
+}
+
+/* ---------- Móvil ---------- */
+@media (max-width: 64rem) {
+  .principal {
+    padding-block: var(--espacio-4) var(--espacio-6);
+  }
+
+  .kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .formulario__rejilla,
+  .indicadores-editor__fila {
+    grid-template-columns: 1fr;
+  }
+
+  .pie__contenido {
+    grid-template-columns: 1fr;
+  }
+
+  .pie__contacto {
+    text-align: left;
+  }
+
+  .titulo-seccion {
+    font-size: 2.4rem;
+  }
+
+  .modal__cuerpo,
+  .modal__cabecera,
+  .tarjeta-panel {
+    padding: var(--espacio-4);
+  }
+
+  .producto__precio-valor {
+    font-size: 3.2rem;
+  }
+
+  /* En móvil el botón de WhatsApp queda solo con el icono para no tapar contenido. */
+  .whatsapp__texto {
+    position: absolute;
+    width: 0.1rem;
+    height: 0.1rem;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .whatsapp {
+    padding: var(--espacio-3);
+  }
+
+  .whatsapp__icono {
+    width: 3.2rem;
+    height: 3.2rem;
+  }
+
+  .avisos {
+    top: auto;
+    bottom: 8rem;
+    right: var(--espacio-3);
+  }
+}

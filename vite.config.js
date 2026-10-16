@@ -1,0 +1,7 @@
+// Configuración mínima de Vite: solo activa el plugin de React.
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+});

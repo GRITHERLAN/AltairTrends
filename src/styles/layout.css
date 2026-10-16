@@ -1,0 +1,188 @@
+/* ============================================================
+   layout.css
+   Estructura general: contenedor, cabecera, pie y botón de WhatsApp.
+   ============================================================ */
+
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-maximo);
+  margin-inline: auto;
+  padding-inline: var(--espacio-4);
+}
+
+.principal {
+  flex: 1;
+  padding-block: var(--espacio-5) var(--espacio-7);
+}
+
+/* ---------- Marca (logo + nombre) ---------- */
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  color: var(--color-dorado);
+  text-decoration: none;
+}
+
+.marca:hover {
+  color: var(--color-dorado-claro);
+  text-decoration: none;
+}
+
+.marca__logo {
+  /* El logo es vertical: se muestra completo (contain), sin recorte circular */
+  width: auto;
+  height: 6.4rem;
+  object-fit: contain;
+  border-radius: var(--radio-pequeno);
+}
+
+.pie .marca__logo {
+  height: 7rem;
+}
+
+.marca__nombre {
+  font-family: var(--fuente-titulos);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.05rem;
+}
+
+.marca__nombre-trends {
+  color: var(--color-dorado-claro);
+  font-weight: 400;
+}
+
+/* ---------- Cabecera ---------- */
+.cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(10, 23, 20, 0.92);
+  backdrop-filter: blur(1rem);
+  border-bottom: 0.1rem solid var(--color-borde);
+}
+
+.cabecera__contenido {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+  padding-block: var(--espacio-3);
+}
+
+.cabecera__menu-boton {
+  display: none;
+  padding: var(--espacio-2) var(--espacio-4);
+  background: var(--color-superficie);
+  border: 0.1rem solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+}
+
+.cabecera__nav {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-5);
+}
+
+.cabecera__lista {
+  display: flex;
+  gap: var(--espacio-4);
+}
+
+.cabecera__enlace {
+  display: inline-block;
+  padding-block: var(--espacio-1);
+  color: var(--color-texto-suave);
+  font-size: 1.5rem;
+  border-bottom: 0.2rem solid transparent;
+}
+
+.cabecera__enlace:hover,
+.cabecera__enlace--activo {
+  color: var(--color-texto);
+  text-decoration: none;
+  border-bottom-color: var(--color-acento);
+}
+
+.cabecera__sesion {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+}
+
+.cabecera__usuario {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  font-size: 1.4rem;
+  color: var(--color-texto-suave);
+}
+
+/* ---------- Pie ---------- */
+.pie {
+  border-top: 0.1rem solid var(--color-borde);
+  background: var(--color-fondo-2);
+  padding-block: var(--espacio-5);
+}
+
+.pie__contenido {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--espacio-4) var(--espacio-6);
+}
+
+.pie__texto,
+.pie__contacto,
+.pie__legal {
+  font-size: 1.3rem;
+  color: var(--color-texto-suave);
+}
+
+.pie__marca {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+}
+
+.pie__contacto {
+  font-style: normal;
+  text-align: right;
+}
+
+.pie__legal {
+  grid-column: 1 / -1;
+}
+
+/* ---------- Botón fijo de WhatsApp (esquina inferior izquierda) ---------- */
+.whatsapp {
+  position: fixed;
+  left: var(--espacio-4);
+  bottom: var(--espacio-4);
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-2) var(--espacio-4) var(--espacio-2) var(--espacio-3);
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: #1faa59;
+  border-radius: var(--radio-pildora);
+  box-shadow: 0 0.6rem 2rem rgba(0, 0, 0, 0.45);
+}
+
+.whatsapp:hover {
+  color: #fff;
+  background: #25c566;
+  text-decoration: none;
+}
+
+.whatsapp__icono {
+  width: 2.8rem;
+  height: 2.8rem;
+  flex-shrink: 0;
+}

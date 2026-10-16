@@ -1,0 +1,53 @@
+/* ============================================================
+   variables.css
+   Paleta y medidas globales. Los colores salen de las imágenes de
+   la carpeta Design (verde oscuro + menta); el dorado sale del logo.
+   Todas las medidas están en rem (1rem = 10px, ver base.css).
+   ============================================================ */
+
+:root {
+  /* Fondos */
+  --color-fondo: #0a1714;
+  --color-fondo-2: #0f201b;
+  --color-superficie: #13241f;
+  --color-superficie-2: #1a302a;
+  --color-borde: #244039;
+
+  /* Texto */
+  --color-texto: #e9f2ef;
+  --color-texto-suave: #9bb5ad;
+
+  /* Acento (menta del diseño) */
+  --color-acento: #19e6a8;
+  --color-acento-hover: #5cf2c6;
+  --color-acento-fondo: rgba(25, 230, 168, 0.12);
+  --color-sobre-acento: #04251c;
+
+  /* Dorado del logo (para las letras del nombre de marca) */
+  --color-dorado: #c9a24b;
+  --color-dorado-claro: #e3c477;
+
+  /* Estados */
+  --color-alerta: #f0b429;
+  --color-alerta-fondo: rgba(240, 180, 41, 0.14);
+  --color-peligro: #ef5350;
+  --color-peligro-fondo: rgba(239, 83, 80, 0.16);
+
+  /* Tipografía */
+  --fuente-base: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --fuente-titulos: 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+
+  /* Espaciado y formas */
+  --espacio-1: 0.4rem;
+  --espacio-2: 0.8rem;
+  --espacio-3: 1.2rem;
+  --espacio-4: 1.6rem;
+  --espacio-5: 2.4rem;
+  --espacio-6: 3.2rem;
+  --espacio-7: 4.8rem;
+  --radio: 1.2rem;
+  --radio-pequeno: 0.8rem;
+  --radio-pildora: 99.9rem;
+  --ancho-maximo: 120rem;
+  --sombra: 0 1rem 3rem rgba(0, 0, 0, 0.35);
+}

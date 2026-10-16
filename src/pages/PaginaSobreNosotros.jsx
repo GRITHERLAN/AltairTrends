@@ -1,0 +1,58 @@
+// ============================================================
+// PaginaSobreNosotros.jsx
+// Descripción de la marca e indicadores. Ambos se editan desde el
+// panel de administración (vienen del ConfigContext).
+// ============================================================
+
+import { useConfig } from '../context/ConfigContext';
+
+export default function PaginaSobreNosotros() {
+  const { config } = useConfig();
+
+  return (
+    <>
+      <section className="heroe contenedor" aria-labelledby="titulo-sobre">
+        <h1 id="titulo-sobre" className="heroe__titulo">
+          Sobre AltairTrends: <span className="texto-acento">Curaduría Digital de Vanguardia</span>
+        </h1>
+        <p className="heroe__texto">
+          Redefinimos el diseño contemporáneo, la moda sostenible y el estilo de vida digital en Colombia y Latinoamérica.
+        </p>
+      </section>
+
+      <section className="contenedor bloque" aria-labelledby="titulo-filosofia">
+        <h2 id="titulo-filosofia" className="titulo-seccion">
+          Filosofía y Misión de Marca
+        </h2>
+        {/* La descripción se divide por saltos de línea para respetar los párrafos que escriba el admin */}
+        {config.descripcion.split('\n').map((parrafo, posicion) => (
+          <p key={posicion} className="bloque__texto">
+            {parrafo}
+          </p>
+        ))}
+      </section>
+
+      <section className="contenedor bloque" aria-labelledby="titulo-indicadores">
+        <p className="etiqueta-seccion">Rendimiento y confianza</p>
+        <h2 id="titulo-indicadores" className="titulo-seccion">
+          Indicadores Clave de Desempeño
+        </h2>
+        <ul className="indicadores">
+          {config.indicadores.map((indicador) => (
+            <li key={indicador.etiqueta} className="indicador">
+              <strong className="indicador__valor">{indicador.valor}</strong>
+              <span className="indicador__etiqueta">{indicador.etiqueta}</span>
+              <p className="indicador__detalle">{indicador.detalle}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="contenedor bloque">
+        <a className="boton boton--primario" href="#/contacto">
+          Contáctanos
+        </a>
+      </section>
+    </>
+  );
+}
