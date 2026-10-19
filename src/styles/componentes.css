@@ -18,7 +18,7 @@
   text-decoration: none;
   border: 0.1rem solid transparent;
   border-radius: var(--radio-pequeno);
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
 .boton:hover {
@@ -31,12 +31,16 @@
 
 .boton--primario {
   color: var(--color-sobre-acento);
-  background: var(--color-acento);
+  background: var(--color-negro);
 }
 
+/* Hover suave: el fondo pasa de negro a un marrón oscuro y el texto champán se
+   mantiene. Antes pasaba de negro a dorado con texto blanco: el texto cambiaba a
+   blanco casi al instante mientras el fondo aún era oscuro, y ese salto brusco de
+   contraste se veía como un parpadeo al entrar y al salir el cursor. */
 .boton--primario:hover:not(:disabled) {
-  color: var(--color-sobre-acento);
-  background: var(--color-acento-hover);
+  background: #8A6D35;
+  color: #ffffff;
 }
 
 .boton--secundario {
@@ -51,13 +55,13 @@
 }
 
 .boton--peligro {
-  color: #ffb4b2;
+  color: var(--color-peligro);
   background: var(--color-peligro-fondo);
-  border-color: rgba(239, 83, 80, 0.4);
+  border-color: var(--color-peligro-borde);
 }
 
 .boton--peligro:hover:not(:disabled) {
-  color: #fff;
+  color: #ffffff;
   background: var(--color-peligro);
 }
 
@@ -100,33 +104,33 @@
 
 .insignia--id {
   color: var(--color-acento);
-  background: rgba(10, 23, 20, 0.85);
-  border-color: var(--color-acento-fondo);
+  background: var(--color-velo);
+  border-color: var(--color-acento-borde);
   font-family: Consolas, monospace;
 }
 
 .insignia--categoria {
   color: var(--color-texto);
-  background: rgba(10, 23, 20, 0.85);
+  background: var(--color-velo);
   border-color: var(--color-borde);
 }
 
 .insignia--exito {
   color: var(--color-acento);
   background: var(--color-acento-fondo);
-  border-color: rgba(25, 230, 168, 0.35);
+  border-color: var(--color-acento-borde);
 }
 
 .insignia--alerta {
   color: var(--color-alerta);
   background: var(--color-alerta-fondo);
-  border-color: rgba(240, 180, 41, 0.4);
+  border-color: var(--color-alerta-borde);
 }
 
 .insignia--critica {
-  color: #ff9c99;
+  color: var(--color-peligro);
   background: var(--color-peligro-fondo);
-  border-color: rgba(239, 83, 80, 0.4);
+  border-color: var(--color-peligro-borde);
 }
 
 .insignia--neutra {
@@ -136,9 +140,9 @@
 }
 
 .insignia--dorada {
-  color: var(--color-dorado-claro);
-  background: rgba(201, 162, 75, 0.14);
-  border-color: rgba(201, 162, 75, 0.45);
+  color: var(--color-acento);
+  background: var(--color-acento-fondo);
+  border-color: var(--color-acento-borde);
 }
 
 /* ---------- Campos de formulario ---------- */
@@ -159,13 +163,13 @@
   width: 100%;
   padding: var(--espacio-3);
   color: var(--color-texto);
-  background: var(--color-fondo-2);
+  background: var(--color-fondo); /* Blanco: resalta sobre las tarjetas crema */
   border: 0.1rem solid var(--color-borde);
   border-radius: var(--radio-pequeno);
 }
 
 .campo__control::placeholder {
-  color: #5f7a72;
+  color: #8a8272;
 }
 
 .campo__control:focus {
@@ -184,7 +188,7 @@ textarea.campo__control {
 
 .campo__error {
   font-size: 1.2rem;
-  color: #ff9c99;
+  color: var(--color-peligro);
 }
 
 .campo__ayuda {
@@ -216,13 +220,13 @@ textarea.campo__control {
 .mensaje--exito {
   color: var(--color-acento);
   background: var(--color-acento-fondo);
-  border-color: rgba(25, 230, 168, 0.35);
+  border-color: var(--color-acento-borde);
 }
 
 .mensaje--error {
-  color: #ffb4b2;
+  color: var(--color-peligro);
   background: var(--color-peligro-fondo);
-  border-color: rgba(239, 83, 80, 0.4);
+  border-color: var(--color-peligro-borde);
 }
 
 /* ---------- Avisos flotantes (toasts) ---------- */
@@ -279,7 +283,7 @@ textarea.campo__control {
   justify-content: center;
   padding: var(--espacio-5) var(--espacio-3);
   overflow-y: auto;
-  background: rgba(3, 10, 8, 0.78);
+  background: var(--color-overlay);
 }
 
 .modal {
@@ -351,11 +355,16 @@ textarea.campo__control {
   border-color: var(--color-acento);
 }
 
-.chip--activo {
+/* Chip seleccionado: fondo negro con texto champán.
+   Depende solo de la clase .chip--activo (estado de React), no de :focus,
+   así la marca persiste aunque se haga clic fuera del botón.
+   Se incluye :hover para que no lo sobrescriba ".chip:hover" (mayor especificidad). */
+.chip--activo,
+.chip--activo:hover {
   color: var(--color-sobre-acento);
   font-weight: 700;
-  background: var(--color-acento);
-  border-color: var(--color-acento);
+  background: var(--color-negro);
+  border-color: var(--color-negro);
 }
 
 /* ---------- Media (imagen / video / marcador) ---------- */
@@ -398,12 +407,16 @@ textarea.campo__control {
   background: var(--color-superficie);
   border: 0.1rem solid var(--color-borde);
   border-radius: var(--radio);
-  transition: transform 0.2s, border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+/* Efecto hover sin mover la tarjeta. Antes se usaba translateY(-0.3rem), pero al
+   subir la tarjeta el cursor (sobre todo en los botones, junto al borde inferior)
+   quedaba fuera de ella, se perdía el hover, la tarjeta bajaba y se repetía:
+   eso causaba el parpadeo al entrar y salir. Con borde y sombra no hay desplazamiento. */
 .tarjeta:hover {
-  transform: translateY(-0.3rem);
-  border-color: rgba(25, 230, 168, 0.5);
+  border-color: var(--color-acento);
+  box-shadow: 0 0.4rem 1.2rem rgba(12, 11, 9, 0.18);
 }
 
 .tarjeta__media {
@@ -429,6 +442,20 @@ textarea.campo__control {
   display: flex;
   flex-wrap: wrap;
   gap: var(--espacio-1);
+}
+
+/* Las etiquetas de estado van sobre la imagen: se les suma el velo blanco para que se lean
+   aunque la imagen sea de un color intenso. */
+.tarjeta__etiquetas .insignia--exito {
+  background: linear-gradient(var(--color-acento-fondo), var(--color-acento-fondo)), var(--color-velo);
+}
+
+.tarjeta__etiquetas .insignia--alerta {
+  background: linear-gradient(var(--color-alerta-fondo), var(--color-alerta-fondo)), var(--color-velo);
+}
+
+.tarjeta__etiquetas .insignia--critica {
+  background: linear-gradient(var(--color-peligro-fondo), var(--color-peligro-fondo)), var(--color-velo);
 }
 
 .tarjeta__cuerpo {
@@ -517,7 +544,7 @@ textarea.campo__control {
   font-size: 2.8rem;
   line-height: 1;
   color: var(--color-texto);
-  background: rgba(10, 23, 20, 0.75);
+  background: var(--color-velo);
   border: 0.1rem solid var(--color-borde);
   border-radius: 50%;
   transform: translateY(-50%);
@@ -525,7 +552,7 @@ textarea.campo__control {
 
 .carrusel__flecha:hover {
   color: var(--color-sobre-acento);
-  background: var(--color-acento);
+  background: var(--color-negro);
 }
 
 .carrusel__flecha--izq {
@@ -542,7 +569,7 @@ textarea.campo__control {
   bottom: var(--espacio-3);
   padding: 0.2rem var(--espacio-2);
   font-size: 1.2rem;
-  background: rgba(10, 23, 20, 0.8);
+  background: var(--color-velo);
   border-radius: var(--radio-pildora);
 }
 
@@ -588,7 +615,7 @@ textarea.campo__control {
   padding: var(--espacio-4) var(--espacio-5);
   color: var(--color-alerta);
   background: var(--color-alerta-fondo);
-  border: 0.1rem solid rgba(240, 180, 41, 0.45);
+  border: 0.1rem solid var(--color-alerta-borde);
   border-radius: var(--radio);
 }
 

@@ -13,10 +13,12 @@ export default function PaginaSobreNosotros() {
     <>
       <section className="heroe contenedor" aria-labelledby="titulo-sobre">
         <h1 id="titulo-sobre" className="heroe__titulo">
-          Sobre AltairTrends: <span className="texto-acento">Curaduría Digital de Vanguardia</span>
+          AltairTrends: <span className="texto-acento">¡Alza vuelo con Altair!</span>
         </h1>
         <p className="heroe__texto">
-          Redefinimos el diseño contemporáneo, la moda sostenible y el estilo de vida digital en Colombia y Latinoamérica.
+          Donde las tendencias alzan vuelo.
+          Tienda online colombiana inspirada en la visión del águila: clara, audaz y siempre a la vanguardia.
+          Productos únicos y funcionales para quienes quieren destacar.
         </p>
       </section>
 

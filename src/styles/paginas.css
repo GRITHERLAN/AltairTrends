@@ -28,63 +28,6 @@
   color: var(--color-acento);
 }
 
-/* ---------- Catálogo: portada ---------- */
-.portada {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espacio-4);
-  margin-bottom: var(--espacio-6);
-  padding-block: var(--espacio-6);
-  background: linear-gradient(135deg, #15382f 0%, var(--color-fondo-2) 60%);
-  border: 0.1rem solid var(--color-borde);
-  border-radius: var(--radio);
-}
-
-.portada__etiqueta {
-  align-self: flex-start;
-  padding: var(--espacio-1) var(--espacio-3);
-  font-size: 1.2rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--color-acento);
-  border: 0.1rem solid var(--color-acento-fondo);
-  border-radius: var(--radio-pildora);
-}
-
-.portada__titulo {
-  font-size: clamp(2.8rem, 5vw, 4.6rem);
-}
-
-.portada__texto {
-  max-width: 60rem;
-  color: var(--color-texto-suave);
-}
-
-.portada__indicadores {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-  gap: var(--espacio-3);
-}
-
-.portada__indicador {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espacio-1);
-  padding: var(--espacio-3) var(--espacio-4);
-  background: rgba(10, 23, 20, 0.55);
-  border: 0.1rem solid var(--color-borde);
-  border-radius: var(--radio-pequeno);
-}
-
-.portada__indicador-etiqueta {
-  font-size: 1.2rem;
-  color: var(--color-texto-suave);
-}
-
-.portada__indicador-valor {
-  color: var(--color-acento);
-}
-
 /* ---------- Catálogo: listado ---------- */
 .catalogo {
   display: flex;
@@ -139,6 +82,19 @@
   background: var(--color-superficie);
   border: 0.1rem solid var(--color-borde);
   border-radius: var(--radio);
+}
+
+/* Filtros del catálogo: se quedan fijos justo debajo de la cabecera al hacer scroll.
+   - top: altura de la cabecera (≈ 8.9rem) + un pequeño margen.
+   - z-index menor que el de la cabecera (50) para que nunca la tape.
+   - max-height + overflow: en pantallas bajas (celular) el card no ocupa toda la
+     pantalla; si no cabe, se desplaza internamente. */
+.filtros--fijo {
+  position: sticky;
+  top: 9.6rem;
+  z-index: 40;
+  max-height: calc(100vh - 11rem);
+  overflow-y: auto;
 }
 
 .filtros__fila {
@@ -219,7 +175,7 @@
 }
 
 .producto__stock--agotado {
-  color: #ff9c99;
+  color: var(--color-peligro);
   background: var(--color-peligro-fondo);
 }
 
@@ -247,7 +203,7 @@
   margin-bottom: var(--espacio-6);
   padding-block: var(--espacio-7);
   text-align: center;
-  background: linear-gradient(135deg, #15382f 0%, var(--color-fondo-2) 70%);
+  background: linear-gradient(135deg, var(--color-superficie-2) 0%, var(--color-fondo-2) 70%);
   border: 0.1rem solid var(--color-borde);
   border-radius: var(--radio);
 }
@@ -377,15 +333,15 @@
   padding: var(--espacio-3) var(--espacio-4);
   font-size: 1.3rem;
   color: var(--color-texto-suave);
-  background: rgba(201, 162, 75, 0.1);
-  border: 0.1rem dashed rgba(201, 162, 75, 0.5);
+  background: var(--color-acento-fondo);
+  border: 0.1rem dashed var(--color-acento-borde);
   border-radius: var(--radio-pequeno);
 }
 
 .nota__titulo {
   margin-bottom: var(--espacio-1);
   font-weight: 700;
-  color: var(--color-dorado-claro);
+  color: var(--color-acento);
 }
 
 /* ---------- Multimedia en el formulario de producto ---------- */

@@ -14,7 +14,7 @@ export default function FiltrosUsuario({ filtros, onCambiar, categorias, onLimpi
   }
 
   return (
-    <form className="filtros" onSubmit={(evento) => evento.preventDefault()} aria-label="Filtros del catálogo">
+    <form className="filtros filtros--fijo" onSubmit={(evento) => evento.preventDefault()} aria-label="Filtros del catálogo">
       <div className="filtros__fila">
         <Campo id="filtro-id" etiqueta="Buscar por ID" valor={filtros.id} placeholder="Ej.: ALT-101" onCambio={(e) => cambiar('id', e.target.value)} />
         <Campo id="filtro-nombre" etiqueta="Buscar por nombre" valor={filtros.nombre} placeholder="Nombre del producto" onCambio={(e) => cambiar('nombre', e.target.value)} />

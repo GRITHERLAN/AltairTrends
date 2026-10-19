@@ -20,7 +20,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--espacio-2);
-  color: var(--color-dorado);
+  color: var(--color-champan);
   text-decoration: none;
 }
 
@@ -49,7 +49,7 @@
 }
 
 .marca__nombre-trends {
-  color: var(--color-dorado-claro);
+  color: var(--color-sobre-negro);
   font-weight: 400;
 }
 
@@ -58,9 +58,8 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(10, 23, 20, 0.92);
-  backdrop-filter: blur(1rem);
-  border-bottom: 0.1rem solid var(--color-borde);
+  background: var(--color-negro);
+  border-bottom: 0.1rem solid var(--color-champan);
 }
 
 .cabecera__contenido {
@@ -75,8 +74,9 @@
 .cabecera__menu-boton {
   display: none;
   padding: var(--espacio-2) var(--espacio-4);
-  background: var(--color-superficie);
-  border: 0.1rem solid var(--color-borde);
+  color: var(--color-champan);
+  background: transparent;
+  border: 0.1rem solid var(--color-champan);
   border-radius: var(--radio-pequeno);
 }
 
@@ -96,16 +96,16 @@
 .cabecera__enlace {
   display: inline-block;
   padding-block: var(--espacio-1);
-  color: var(--color-texto-suave);
+  color: var(--color-sobre-negro-suave);
   font-size: 1.5rem;
   border-bottom: 0.2rem solid transparent;
 }
 
 .cabecera__enlace:hover,
 .cabecera__enlace--activo {
-  color: var(--color-texto);
+  color: var(--color-sobre-negro);
   text-decoration: none;
-  border-bottom-color: var(--color-acento);
+  border-bottom-color: var(--color-champan);
 }
 
 .cabecera__sesion {
@@ -119,13 +119,31 @@
   align-items: center;
   gap: var(--espacio-2);
   font-size: 1.4rem;
-  color: var(--color-texto-suave);
+  color: var(--color-sobre-negro-suave);
+}
+
+/* La insignia "Admin" va en champán porque la cabecera es negra. */
+.cabecera .insignia--dorada {
+  color: var(--color-champan);
+  background: transparent;
+  border-color: var(--color-champan);
+}
+
+/* El botón primario es negro, así que dentro de la cabecera negra se invierte. */
+.cabecera .boton--primario {
+  color: var(--color-negro);
+  background: var(--color-champan);
+}
+
+.cabecera .boton--primario:hover:not(:disabled) {
+  color: var(--color-negro);
+  background: var(--color-sobre-negro);
 }
 
 /* ---------- Pie ---------- */
 .pie {
-  border-top: 0.1rem solid var(--color-borde);
-  background: var(--color-fondo-2);
+  border-top: 0.1rem solid var(--color-champan);
+  background: var(--color-negro);
   padding-block: var(--espacio-5);
 }
 
@@ -139,7 +157,16 @@
 .pie__contacto,
 .pie__legal {
   font-size: 1.3rem;
-  color: var(--color-texto-suave);
+  color: var(--color-sobre-negro-suave);
+}
+
+/* Los enlaces del pie (correo y teléfono) van en champán sobre el fondo negro. */
+.pie a {
+  color: var(--color-champan);
+}
+
+.pie a:hover {
+  color: var(--color-sobre-negro);
 }
 
 .pie__marca {

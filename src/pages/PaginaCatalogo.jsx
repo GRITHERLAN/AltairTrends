@@ -1,19 +1,17 @@
 // ============================================================
 // PaginaCatalogo.jsx
-// Página principal: portada + catálogo con filtros.
+// Página principal: catálogo con filtros.
 // Solo muestra productos con estado Activo.
 // ============================================================
 
 import { useState } from 'react';
 import FiltrosUsuario from '../components/catalogo/FiltrosUsuario';
 import TarjetaProducto from '../components/catalogo/TarjetaProducto';
-import { useConfig } from '../context/ConfigContext';
 import { useProductos } from '../context/ProductosContext';
 import { FILTROS_INICIALES, filtrarProductos, obtenerCategorias } from '../utils/filtrarProductos';
 
 export default function PaginaCatalogo() {
   const { productos } = useProductos();
-  const { config } = useConfig();
   const [filtros, setFiltros] = useState(FILTROS_INICIALES);
 
   // Solo los productos activos son visibles para el usuario.
@@ -24,31 +22,13 @@ export default function PaginaCatalogo() {
 
   return (
     <>
-      <section className="portada contenedor" aria-labelledby="titulo-portada">
-        <p className="portada__etiqueta">● Stock nacional disponible</p>
-        <h1 id="titulo-portada" className="portada__titulo">
-          Colección Digital &amp; <span className="texto-acento">Tendencias Exclusivas</span>
-        </h1>
-        <p className="portada__texto">
-          AltairTrends · Curaduría contemporánea de lujo accesible en Colombia con despacho nacional garantizado y
-          certificación de autenticidad.
-        </p>
-        <ul className="portada__indicadores">
-          {config.indicadores.slice(0, 4).map((indicador) => (
-            <li key={indicador.etiqueta} className="portada__indicador">
-              <span className="portada__indicador-etiqueta">{indicador.etiqueta}</span>
-              <strong className="portada__indicador-valor">{indicador.valor}</strong>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <section className="catalogo contenedor" aria-labelledby="titulo-catalogo">
         <header className="catalogo__cabecera">
           <div>
-            <h2 id="titulo-catalogo" className="titulo-seccion">
+            {/* Es el encabezado principal (h1) de la página, ya que no hay portada */}
+            <h1 id="titulo-catalogo" className="titulo-seccion">
               Catálogo Exclusivo <span className="insignia insignia--exito">Solo productos disponibles</span>
-            </h2>
+            </h1>
             <p className="catalogo__subtitulo">
               Explora piezas seleccionadas en inventario inmediato, con precios en pesos colombianos (COP).
             </p>

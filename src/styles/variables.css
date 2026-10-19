@@ -1,37 +1,56 @@
 /* ============================================================
    variables.css
-   Paleta y medidas globales. Los colores salen de las imágenes de
-   la carpeta Design (verde oscuro + menta); el dorado sale del logo.
+   Paleta y medidas globales. Los colores salen de la "Opción E ·
+   Negro y Champán sobre Blanco" (Design/Cambio_Paleta_colores.pdf):
+     #0C0B09 negro · #E6D3A3 champán · #8A6D35 dorado oscuro
+     #F7F2E7 crema  · #FFFFFF blanco
+   Los tonos intermedios (bordes, textos suaves, estados) están
+   derivados de esa paleta para mantener un buen contraste.
    Todas las medidas están en rem (1rem = 10px, ver base.css).
    ============================================================ */
 
 :root {
-  /* Fondos */
-  --color-fondo: #0a1714;
-  --color-fondo-2: #0f201b;
-  --color-superficie: #13241f;
-  --color-superficie-2: #1a302a;
-  --color-borde: #244039;
+  /* Colores base de la paleta */
+  --color-negro: #0c0b09;
+  --color-champan: #e6d3a3;
 
-  /* Texto */
-  --color-texto: #e9f2ef;
-  --color-texto-suave: #9bb5ad;
+  /* Fondos (tema claro: blanco y crema) */
+  --color-fondo: #ffffff;
+  --color-fondo-2: #f7f2e7;
+  --color-superficie: #f7f2e7;
+  --color-superficie-2: #efe6d0;
+  --color-borde: #e2d6b8;
 
-  /* Acento (menta del diseño) */
-  --color-acento: #19e6a8;
-  --color-acento-hover: #5cf2c6;
-  --color-acento-fondo: rgba(25, 230, 168, 0.12);
-  --color-sobre-acento: #04251c;
+  /* Texto sobre fondos claros */
+  --color-texto: #0c0b09;
+  --color-texto-suave: #5e5646;
 
-  /* Dorado del logo (para las letras del nombre de marca) */
-  --color-dorado: #c9a24b;
-  --color-dorado-claro: #e3c477;
+  /* Texto sobre fondos negros (cabecera y pie) */
+  --color-sobre-negro: #ffffff;
+  --color-sobre-negro-suave: #c9bfa6;
 
-  /* Estados */
-  --color-alerta: #f0b429;
-  --color-alerta-fondo: rgba(240, 180, 41, 0.14);
-  --color-peligro: #ef5350;
-  --color-peligro-fondo: rgba(239, 83, 80, 0.16);
+  /* Acento (dorado oscuro de la paleta) */
+  --color-acento: #8a6d35;
+  --color-acento-hover: #6f5626;
+  --color-acento-fondo: rgba(138, 109, 53, 0.12);
+  --color-acento-borde: rgba(138, 109, 53, 0.35);
+  --color-sobre-acento: #e6d3a3; /* Texto de los botones negros */
+
+  /* Champán: nombre de marca sobre fondo negro */
+  --color-dorado: #e6d3a3;
+  --color-dorado-claro: #f1e4bf;
+
+  /* Estados (ajustados para que se lean sobre fondos claros) */
+  --color-alerta: #8a5a00;
+  --color-alerta-fondo: rgba(176, 120, 0, 0.14);
+  --color-alerta-borde: rgba(176, 120, 0, 0.4);
+  --color-peligro: #b3261e;
+  --color-peligro-fondo: rgba(179, 38, 30, 0.1);
+  --color-peligro-borde: rgba(179, 38, 30, 0.35);
+
+  /* Capas translúcidas */
+  --color-velo: rgba(255, 255, 255, 0.92); /* Etiquetas sobre las imágenes */
+  --color-overlay: rgba(12, 11, 9, 0.6); /* Fondo detrás de los modales */
 
   /* Tipografía */
   --fuente-base: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
@@ -49,5 +68,5 @@
   --radio-pequeno: 0.8rem;
   --radio-pildora: 99.9rem;
   --ancho-maximo: 120rem;
-  --sombra: 0 1rem 3rem rgba(0, 0, 0, 0.35);
+  --sombra: 0 1rem 3rem rgba(12, 11, 9, 0.18);
 }

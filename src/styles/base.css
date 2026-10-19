@@ -24,8 +24,6 @@ body {
   line-height: 1.55;
   color: var(--color-texto);
   background-color: var(--color-fondo);
-  background-image: radial-gradient(circle at 80% -10%, #14352c 0%, var(--color-fondo) 45%);
-  background-attachment: fixed;
 }
 
 #root {
