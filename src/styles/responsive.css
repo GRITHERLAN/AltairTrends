@@ -88,6 +88,44 @@
     font-size: 3.2rem;
   }
 
+  /* Filtros del catálogo: el card pasa a ser un menú desplegable. */
+  .filtros--fijo {
+    gap: 0;
+    padding: var(--espacio-2) var(--espacio-3);
+  }
+
+  .filtros__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--espacio-2) 0;
+    font: inherit;
+    font-weight: 600;
+    color: var(--color-texto);
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .filtros__flecha {
+    transition: transform 0.2s ease;
+  }
+
+  .filtros__flecha--abierta {
+    transform: rotate(180deg);
+  }
+
+  /* Cerrado por defecto; se muestra al abrir el menú. */
+  .filtros__contenido {
+    display: none;
+    padding-block: var(--espacio-3) var(--espacio-2);
+  }
+
+  .filtros__contenido--abierto {
+    display: flex;
+  }
+
   /* En móvil el botón de WhatsApp queda solo con el icono para no tapar contenido. */
   .whatsapp__texto {
     position: absolute;

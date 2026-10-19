@@ -97,6 +97,18 @@
   overflow-y: auto;
 }
 
+/* Contenedor del contenido desplegable: en escritorio se comporta como el card normal. */
+.filtros__contenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+}
+
+/* El botón de desplegar solo existe en móvil (ver responsive.css). */
+.filtros__toggle {
+  display: none;
+}
+
 .filtros__fila {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
