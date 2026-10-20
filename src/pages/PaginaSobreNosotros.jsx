@@ -34,21 +34,25 @@ export default function PaginaSobreNosotros() {
         ))}
       </section>
 
-      <section className="contenedor bloque" aria-labelledby="titulo-indicadores">
-        <p className="etiqueta-seccion">Rendimiento y confianza</p>
-        <h2 id="titulo-indicadores" className="titulo-seccion">
-          Indicadores Clave de Desempeño
-        </h2>
-        <ul className="indicadores">
-          {config.indicadores.map((indicador) => (
-            <li key={indicador.etiqueta} className="indicador">
-              <strong className="indicador__valor">{indicador.valor}</strong>
-              <span className="indicador__etiqueta">{indicador.etiqueta}</span>
-              <p className="indicador__detalle">{indicador.detalle}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {/* Si el administrador quitó todos los indicadores, la sección no se muestra */}
+      {config.indicadores.length > 0 && (
+        <section className="contenedor bloque" aria-labelledby="titulo-indicadores">
+          <p className="etiqueta-seccion">Rendimiento y confianza</p>
+          <h2 id="titulo-indicadores" className="titulo-seccion">
+            Indicadores Clave de Desempeño
+          </h2>
+          <ul className="indicadores">
+            {/* key por posición: el nombre del indicador puede repetirse */}
+            {config.indicadores.map((indicador, posicion) => (
+              <li key={posicion} className="indicador">
+                <strong className="indicador__valor">{indicador.valor}</strong>
+                <span className="indicador__etiqueta">{indicador.etiqueta}</span>
+                <p className="indicador__detalle">{indicador.detalle}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="contenedor bloque">
         <a className="boton boton--primario" href="#/contacto">

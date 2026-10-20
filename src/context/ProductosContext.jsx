@@ -14,11 +14,16 @@ import {
   obtenerProductos,
   restablecerProductos,
 } from '../services/productosService';
+import { obtenerVentasPorCategoria, obtenerVentasPorProducto } from '../services/ventasService';
 
 const ProductosContext = createContext(null);
 
 export function ProductosProvider({ children }) {
   const [productos, setProductos] = useState(() => obtenerProductos());
+  // Compras acumuladas por categoría (alimenta el gráfico del panel de administración).
+  const [ventas, setVentas] = useState(() => obtenerVentasPorCategoria());
+  // Compras acumuladas por producto: { idProducto: { nombre, cantidad } }.
+  const [ventasProducto, setVentasProducto] = useState(() => obtenerVentasPorProducto());
 
   // Cada acción llama al servicio y, si todo salió bien, actualiza el estado.
   function crear(datos) {
@@ -47,18 +52,26 @@ export function ProductosProvider({ children }) {
 
   function comprar(id) {
     const resultado = comprarProducto(id);
-    if (resultado.ok) setProductos(resultado.productos);
+    if (resultado.ok) {
+      setProductos(resultado.productos);
+      setVentas(resultado.ventas);
+      setVentasProducto(resultado.ventasProducto);
+    }
     return resultado;
   }
 
   function restablecer() {
     const resultado = restablecerProductos();
-    if (resultado.ok) setProductos(resultado.productos);
+    if (resultado.ok) {
+      setProductos(resultado.productos);
+      setVentas(resultado.ventas);
+      setVentasProducto(resultado.ventasProducto);
+    }
     return resultado;
   }
 
   return (
-    <ProductosContext.Provider value={{ productos, crear, actualizar, eliminar, cambiarEstado, comprar, restablecer }}>
+    <ProductosContext.Provider value={{ productos, ventas, ventasProducto, crear, actualizar, eliminar, cambiarEstado, comprar, restablecer }}>
       {children}
     </ProductosContext.Provider>
   );

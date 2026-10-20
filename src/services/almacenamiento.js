@@ -11,6 +11,8 @@ export const CLAVES = {
   sesion: 'altair_sesion',
   config: 'altair_config',
   mensajes: 'altair_mensajes',
+  ventasCategoria: 'altair_ventas_categoria', // Contador de compras por categoría
+  ventasProducto: 'altair_ventas_producto', // Contador de compras por producto
 };
 
 // Lee una clave y la convierte de texto JSON a objeto.

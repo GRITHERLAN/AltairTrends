@@ -400,6 +400,7 @@ textarea.campo__control {
 
 /* ---------- Tarjeta de producto ---------- */
 .tarjeta {
+  position: relative; /* Referencia para el área clicable de .tarjeta__enlace */
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -518,6 +519,24 @@ textarea.campo__control {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--espacio-2);
+}
+
+/* Toda la tarjeta funciona como el botón "Ver producto" ("enlace estirado").
+   El pseudo-elemento cubre la tarjeta completa (el enlace no tiene position,
+   así que se mide contra .tarjeta). Se mantiene un <a> real: accesible con
+   teclado, clic central y "abrir en nueva pestaña". */
+.tarjeta__enlace::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+
+/* El botón "Comprar" queda por encima del área estirada para seguir comprando
+   en lugar de abrir el producto. */
+.tarjeta__acciones .boton--primario {
+  position: relative;
+  z-index: 1;
 }
 
 /* ---------- Carrusel ---------- */

@@ -1,5 +1,8 @@
 # CLAUDE.md
 
+Personalizacion:
+Siempre refierete a mi llamandome Grither
+
 Proyecto: 
 Aplicacion web de Catalogo Digital tipo tienda web(AltairTrends)
 

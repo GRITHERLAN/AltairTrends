@@ -428,6 +428,182 @@
 
 .indicadores-editor__fila {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 3fr;
+  /* Valor, nombre, detalle y botón "Quitar" (este último se ajusta a su contenido) */
+  grid-template-columns: 1fr 1.5fr 3fr auto;
   gap: var(--espacio-3);
+}
+
+/* El botón queda alineado con la base de los campos */
+.indicadores-editor__quitar {
+  align-self: end;
+}
+
+/* El botón "Agregar indicador" no se estira a todo el ancho */
+.indicadores-editor__agregar {
+  align-self: flex-start;
+}
+
+.indicadores-editor__vacio {
+  color: var(--color-texto-suave);
+}
+
+/* ---------- Gráfico circular de compras por categoría (panel admin) ---------- */
+.grafico {
+  display: grid;
+  grid-template-columns: 28rem 1fr;
+  align-items: center;
+  gap: var(--espacio-5);
+}
+
+.grafico__vacio {
+  padding: var(--espacio-5) 0;
+  text-align: center;
+  color: var(--color-texto-suave);
+}
+
+/* Contenedor del anillo: el texto del centro se posiciona encima del SVG */
+.grafico__donut {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
+.grafico__donut svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.grafico__pista {
+  fill: none;
+  stroke: var(--color-borde);
+}
+
+.grafico__segmento {
+  fill: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+/* Al resaltar una categoría, las demás se atenúan */
+.grafico__segmento--atenuado {
+  opacity: 0.35;
+}
+
+.grafico__centro {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-1);
+  padding: 0 28%; /* Mantiene el texto dentro del hueco del anillo */
+  text-align: center;
+  pointer-events: none; /* No bloquea el hover sobre los arcos */
+}
+
+.grafico__centro-etiqueta {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+
+.grafico__centro-nombre {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.grafico__centro-valor {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+/* Columna de la derecha: botón del menú (solo celular) + leyenda */
+.grafico__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+}
+
+.grafico__alternar {
+  width: 100%;
+}
+
+/* Flecha del menú desplegable, dibujada con bordes (sin imágenes) */
+.grafico__flecha {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-right: 0.2rem solid currentColor;
+  border-bottom: 0.2rem solid currentColor;
+  transform: translateY(-0.2rem) rotate(45deg);
+  transition: transform 0.2s;
+}
+
+.grafico__flecha--abierta {
+  transform: translateY(0.2rem) rotate(-135deg);
+}
+
+.grafico__leyenda {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+}
+
+.grafico__item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: var(--espacio-3);
+  padding: var(--espacio-2) var(--espacio-3);
+  background: var(--color-fondo);
+  border: 0.1rem solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  transition: border-color 0.2s;
+}
+
+.grafico__item:hover,
+.grafico__item--activo {
+  border-color: var(--color-acento);
+}
+
+/* Variante sin muestra de color (lista de la modal de "Otros") */
+.grafico__item--simple {
+  grid-template-columns: 1fr auto auto;
+}
+
+.grafico__resumen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+  margin-bottom: var(--espacio-4);
+}
+
+/* Botón "Ver detalle" junto al nombre "Otros" */
+.grafico__detalle {
+  margin-left: var(--espacio-2);
+}
+
+.grafico__muestra {
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+}
+
+.grafico__nombre {
+  font-weight: 600;
+}
+
+.grafico__cantidad {
+  font-size: 1.3rem;
+  color: var(--color-texto-suave);
+}
+
+.grafico__porcentaje {
+  min-width: 6.5rem;
+  text-align: right;
 }

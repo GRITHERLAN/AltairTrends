@@ -22,6 +22,20 @@ export default function EditorContacto() {
     setErrores({ ...errores, indicadores: undefined });
   }
 
+  // Agrega un indicador vacío al final de la lista (no hay límite de cantidad).
+  function agregarIndicador() {
+    const indicadores = [...datos.indicadores, { valor: '', etiqueta: '', detalle: '' }];
+    setDatos({ ...datos, indicadores });
+    setErrores({ ...errores, indicadores: undefined });
+  }
+
+  // Quita el indicador que está en la posición indicada (se puede llegar a cero indicadores).
+  function quitarIndicador(posicion) {
+    const indicadores = datos.indicadores.filter((_, i) => i !== posicion);
+    setDatos({ ...datos, indicadores });
+    setErrores({ ...errores, indicadores: undefined });
+  }
+
   function manejarEnvio(evento) {
     evento.preventDefault();
     const resultado = actualizarConfig(datos);
@@ -31,6 +45,8 @@ export default function EditorContacto() {
       mostrarAviso('error', 'Revisa los campos marcados antes de guardar.');
       return;
     }
+    // Se refleja en el formulario la lista ya limpia (sin las filas vacías que se descartaron).
+    setDatos(resultado.config);
     setErrores({});
     mostrarAviso('exito', 'Información de contacto guardada correctamente.');
   }
@@ -68,13 +84,22 @@ export default function EditorContacto() {
               {errores.indicadores}
             </p>
           )}
+          {/* Sin indicadores: se avisa al administrador en lugar de dejar la card vacía */}
+          {datos.indicadores.length === 0 && <p className="indicadores-editor__vacio">Aún no hay indicadores. Usa el botón "Agregar indicador" para crear el primero.</p>}
           {datos.indicadores.map((indicador, posicion) => (
             <div key={posicion} className="indicadores-editor__fila">
               <Campo id={`indicador-valor-${posicion}`} etiqueta={`Indicador ${posicion + 1}: valor`} valor={indicador.valor} onCambio={(e) => cambiarIndicador(posicion, 'valor', e.target.value)} />
               <Campo id={`indicador-etiqueta-${posicion}`} etiqueta="Nombre" valor={indicador.etiqueta} onCambio={(e) => cambiarIndicador(posicion, 'etiqueta', e.target.value)} />
               <Campo id={`indicador-detalle-${posicion}`} etiqueta="Detalle" valor={indicador.detalle} onCambio={(e) => cambiarIndicador(posicion, 'detalle', e.target.value)} />
+              {/* type="button" para que no envíe el formulario */}
+              <button type="button" className="boton boton--peligro boton--pequeno indicadores-editor__quitar" aria-label={`Quitar indicador ${posicion + 1}`} onClick={() => quitarIndicador(posicion)}>
+                Quitar
+              </button>
             </div>
           ))}
+          <button type="button" className="boton boton--secundario boton--pequeno indicadores-editor__agregar" onClick={agregarIndicador}>
+            Agregar indicador
+          </button>
         </fieldset>
 
         <button type="submit" className="boton boton--primario">

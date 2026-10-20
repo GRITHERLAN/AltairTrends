@@ -48,6 +48,17 @@
   --color-peligro-fondo: rgba(179, 38, 30, 0.1);
   --color-peligro-borde: rgba(179, 38, 30, 0.35);
 
+  /* Colores del gráfico de categorías (derivados de la paleta, bien distinguibles entre sí) */
+  --grafico-1: #8a6d35; /* dorado oscuro */
+  --grafico-2: #0c0b09; /* negro */
+  --grafico-3: #c4a35a; /* dorado medio */
+  --grafico-4: #3f6b5c; /* verde apagado */
+  --grafico-5: #a8431f; /* terracota */
+  --grafico-6: #5e5646; /* taupe */
+  --grafico-7: #e6d3a3; /* champán */
+  --grafico-8: #4a5a7a; /* azul pizarra */
+  --grafico-otros: #b8a88a; /* gris arena: agrupa el resto de productos ("Otros") */
+
   /* Capas translúcidas */
   --color-velo: rgba(255, 255, 255, 0.92); /* Etiquetas sobre las imágenes */
   --color-overlay: rgba(12, 11, 9, 0.6); /* Fondo detrás de los modales */

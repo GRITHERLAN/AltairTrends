@@ -38,7 +38,8 @@ export default function TarjetaProducto({ producto }) {
         </p>
 
         <div className="tarjeta__acciones">
-          <a className="boton boton--secundario" href={`#/producto/${encodeURIComponent(producto.id)}`}>
+          {/* Este enlace estira su área clicable a toda la tarjeta (ver .tarjeta__enlace en CSS) */}
+          <a className="boton boton--secundario tarjeta__enlace" href={`#/producto/${encodeURIComponent(producto.id)}`}>
             Ver producto
           </a>
           <button

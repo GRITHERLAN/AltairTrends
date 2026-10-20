@@ -11,7 +11,8 @@
   }
 
   .producto__rejilla,
-  .contacto__rejilla {
+  .contacto__rejilla,
+  .grafico {
     grid-template-columns: 1fr;
   }
 
@@ -19,8 +20,14 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .indicadores-editor__fila > :last-child {
+  /* El detalle ocupa todo el ancho y el botón "Quitar" va debajo, a la izquierda */
+  .indicadores-editor__fila > :nth-child(3),
+  .indicadores-editor__fila > .indicadores-editor__quitar {
     grid-column: 1 / -1;
+  }
+
+  .indicadores-editor__quitar {
+    justify-self: start;
   }
 
   /* La navegación pasa a un menú desplegable. */
@@ -64,6 +71,16 @@
   .formulario__rejilla,
   .indicadores-editor__fila {
     grid-template-columns: 1fr;
+  }
+
+  /* En móvil la leyenda apila la cantidad bajo el nombre */
+  .grafico__item {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .grafico__cantidad {
+    grid-column: 2;
+    grid-row: 2;
   }
 
   .pie__contenido {

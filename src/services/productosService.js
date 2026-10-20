@@ -10,6 +10,7 @@
 
 import { CLAVES, leer, escribir } from './almacenamiento';
 import { crearProductosSemilla } from '../data/productosSemilla';
+import { registrarVentaCategoria, registrarVentaProducto, reiniciarVentas } from './ventasService';
 
 // Devuelve todos los productos. Si es la primera vez, siembra los de prueba.
 export function obtenerProductos() {
@@ -21,11 +22,15 @@ export function obtenerProductos() {
   return semilla;
 }
 
-// Vuelve a cargar los 10 productos de prueba (descarta los actuales).
+// Vuelve a cargar los 10 productos de prueba (descarta los actuales)
+// y también reinicia a cero los contadores de compras (por categoría y por producto).
 export function restablecerProductos() {
   const semilla = crearProductosSemilla();
   const resultado = escribir(CLAVES.productos, semilla);
-  return { ok: resultado.ok, productos: semilla, error: resultado.error };
+  if (!resultado.ok) return { ok: false, productos: semilla, error: resultado.error };
+
+  const ventas = reiniciarVentas();
+  return { ok: ventas.ok, productos: semilla, ventas: ventas.ventas, ventasProducto: ventas.ventasProducto, error: ventas.error };
 }
 
 // Compara textos sin importar mayúsculas, minúsculas ni espacios sobrantes.
@@ -158,7 +163,8 @@ export function cambiarEstadoProducto(id) {
   return { ok: resultado.ok, productos: lista, error: resultado.error };
 }
 
-// Registra una compra: resta 1 unidad de stock (solo si hay y el producto está activo).
+// Registra una compra: resta 1 unidad de stock (solo si hay y el producto está activo)
+// y suma 1 a los contadores de compras de la categoría y del producto.
 export function comprarProducto(id) {
   const productos = obtenerProductos();
   const producto = productos.find((p) => p.id === id);
@@ -170,5 +176,9 @@ export function comprarProducto(id) {
   const lista = productos.map((p) => (p.id === id ? { ...p, stock: p.stock - 1 } : p));
   const resultado = escribir(CLAVES.productos, lista);
   if (!resultado.ok) return { ok: false, error: resultado.error };
-  return { ok: true, producto: producto, productos: lista };
+
+  // La compra ya es válida: se cuenta para las estadísticas de la categoría y del producto.
+  const ventaCategoria = registrarVentaCategoria(producto.categoria);
+  const ventaProducto = registrarVentaProducto(producto);
+  return { ok: true, producto: producto, productos: lista, ventas: ventaCategoria.ventas, ventasProducto: ventaProducto.ventasProducto };
 }

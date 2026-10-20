@@ -10,6 +10,8 @@ import AlertaAntiguos from '../components/admin/AlertaAntiguos';
 import EditorContacto from '../components/admin/EditorContacto';
 import FiltrosAdmin from '../components/admin/FiltrosAdmin';
 import FormularioProducto from '../components/admin/FormularioProducto';
+import GraficoCategorias from '../components/admin/GraficoCategorias';
+import GraficoProductos from '../components/admin/GraficoProductos';
 import ResumenKpis from '../components/admin/ResumenKpis';
 import TablaProductos from '../components/admin/TablaProductos';
 import ModalConfirmacion from '../components/ui/ModalConfirmacion';
@@ -21,7 +23,7 @@ import { FILTROS_INICIALES, filtrarProductos, obtenerCategorias } from '../utils
 
 export default function PaginaAdmin() {
   const { esAdmin } = useAuth();
-  const { productos, crear, actualizar, eliminar, cambiarEstado, restablecer } = useProductos();
+  const { productos, ventas, ventasProducto, crear, actualizar, eliminar, cambiarEstado, restablecer } = useProductos();
   const { mostrarAviso } = useAvisos();
 
   const [filtros, setFiltros] = useState(FILTROS_INICIALES);
@@ -80,7 +82,7 @@ export default function PaginaAdmin() {
     const resultado = restablecer();
     setModal(null);
     setFiltros(FILTROS_INICIALES);
-    mostrarAviso(resultado.ok ? 'exito' : 'error', resultado.ok ? 'Se restablecieron los 10 productos de prueba.' : resultado.error);
+    mostrarAviso(resultado.ok ? 'exito' : 'error', resultado.ok ? 'Se restablecieron los 10 productos de prueba y los gráficos de compras volvieron a cero.' : resultado.error);
   }
 
   return (
@@ -110,6 +112,10 @@ export default function PaginaAdmin() {
       />
 
       <ResumenKpis productos={productos} />
+
+      <GraficoCategorias productos={productos} ventas={ventas} />
+
+      <GraficoProductos productos={productos} ventasProducto={ventasProducto} />
 
       <FiltrosAdmin filtros={filtros} onCambiar={setFiltros} categorias={categorias} conteo={conteo} onLimpiar={() => setFiltros(FILTROS_INICIALES)} />
 
@@ -147,7 +153,7 @@ export default function PaginaAdmin() {
       {modal && modal.tipo === 'restablecer' && (
         <ModalConfirmacion
           titulo="Restablecer datos de prueba"
-          mensaje="Se reemplazarán TODOS los productos actuales por los 10 productos de prueba. ¿Deseas continuar?"
+          mensaje="Se reemplazarán TODOS los productos actuales por los 10 productos de prueba y los gráficos de compras (por categoría y por producto) volverán a cero. ¿Deseas continuar?"
           textoConfirmar="Sí, restablecer"
           onConfirmar={confirmarRestablecer}
           onCancelar={() => setModal(null)}

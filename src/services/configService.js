@@ -24,16 +24,20 @@ export function guardarConfig(config) {
   if (String(config.telefono ?? '').trim().length < 7) errores.telefono = 'Ingresa un teléfono válido.';
   if (String(config.descripcion ?? '').trim() === '') errores.descripcion = 'La descripción de marca es obligatoria.';
 
-  // Cada indicador necesita valor y etiqueta.
-  const indicadores = config.indicadores ?? [];
-  const indicadorIncompleto = indicadores.some((i) => i.valor.trim() === '' || i.etiqueta.trim() === '');
-  if (indicadorIncompleto) errores.indicadores = 'Cada indicador necesita un valor y un nombre.';
+  // La cantidad de indicadores es libre (de 0 a N). Las filas totalmente vacías se descartan.
+  const indicadores = (config.indicadores ?? []).filter((i) => [i.valor, i.etiqueta, i.detalle].some((texto) => String(texto ?? '').trim() !== ''));
+
+  // Las filas que sí tienen algo escrito necesitan al menos valor y nombre.
+  const indicadorIncompleto = indicadores.some((i) => String(i.valor ?? '').trim() === '' || String(i.etiqueta ?? '').trim() === '');
+  if (indicadorIncompleto) errores.indicadores = 'Cada indicador necesita un valor y un nombre. Complétalo o quítalo.';
 
   if (Object.keys(errores).length > 0) return { ok: false, errores };
 
-  const resultado = escribir(CLAVES.config, config);
+  // Se guarda la lista ya limpia, sin las filas vacías.
+  const configLimpia = { ...config, indicadores };
+  const resultado = escribir(CLAVES.config, configLimpia);
   if (!resultado.ok) return { ok: false, errores: { general: resultado.error } };
-  return { ok: true, config };
+  return { ok: true, config: configLimpia };
 }
 
 // Guarda un mensaje enviado desde el formulario de contacto.
