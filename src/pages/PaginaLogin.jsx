@@ -7,7 +7,9 @@ import { useState } from 'react';
 import Campo from '../components/ui/Campo';
 import { useAuth } from '../context/AuthContext';
 import { useAvisos } from '../context/AvisosContext';
+import { irA } from '../hooks/useRuta';
 import { ADMIN_SEMILLA } from '../services/usuariosService';
+import { enlaceInterno } from '../utils/rutasCifradas';
 
 export default function PaginaLogin() {
   const { entrar } = useAuth();
@@ -35,7 +37,7 @@ export default function PaginaLogin() {
 
     mostrarAviso('exito', `¡Bienvenido, ${resultado.usuario.nombre}!`);
     // El administrador va directo a su panel; el usuario, al catálogo.
-    window.location.hash = resultado.usuario.rol === 'admin' ? '/admin' : '/';
+    irA(resultado.usuario.rol === 'admin' ? '/admin' : '/');
   }
 
   // Rellena el formulario con las credenciales de prueba del admin.
@@ -66,7 +68,7 @@ export default function PaginaLogin() {
         </button>
 
         <p className="formulario__pie">
-          ¿No tienes cuenta? <a href="#/registro">Regístrate</a>
+          ¿No tienes cuenta? <a href={enlaceInterno('/registro')}>Regístrate</a>
         </p>
 
         <aside className="nota">

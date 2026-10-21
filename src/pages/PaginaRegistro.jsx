@@ -7,6 +7,8 @@ import { useState } from 'react';
 import Campo from '../components/ui/Campo';
 import { useAuth } from '../context/AuthContext';
 import { useAvisos } from '../context/AvisosContext';
+import { irA } from '../hooks/useRuta';
+import { enlaceInterno } from '../utils/rutasCifradas';
 
 export default function PaginaRegistro() {
   const { registrar } = useAuth();
@@ -46,7 +48,7 @@ export default function PaginaRegistro() {
     }
 
     mostrarAviso('exito', `¡Cuenta creada! Bienvenido, ${resultado.usuario.nombre}.`);
-    window.location.hash = '/';
+    irA('/');
   }
 
   return (
@@ -72,7 +74,7 @@ export default function PaginaRegistro() {
         </button>
 
         <p className="formulario__pie">
-          ¿Ya tienes cuenta? <a href="#/login">Inicia sesión</a>
+          ¿Ya tienes cuenta? <a href={enlaceInterno('/login')}>Inicia sesión</a>
         </p>
       </form>
     </section>

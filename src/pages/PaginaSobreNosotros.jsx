@@ -5,6 +5,7 @@
 // ============================================================
 
 import { useConfig } from '../context/ConfigContext';
+import { enlaceInterno } from '../utils/rutasCifradas';
 
 export default function PaginaSobreNosotros() {
   const { config } = useConfig();
@@ -55,7 +56,7 @@ export default function PaginaSobreNosotros() {
       )}
 
       <section className="contenedor bloque">
-        <a className="boton boton--primario" href="#/contacto">
+        <a className="boton boton--primario" href={enlaceInterno('/contacto')}>
           Contáctanos
         </a>
       </section>

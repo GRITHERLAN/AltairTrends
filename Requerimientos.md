@@ -41,3 +41,4 @@ Requerimientos:
   - Haz que las leyendas de los ambos graficos (Categorias y Productos) queden en un menu desplegable en modo
     responsive de celulares.
 - Pendiente:
+  - Realiza un cifrado de las rutas(URL) para la navegacion de la pagina web entre enlaces internos

@@ -4,10 +4,11 @@
 // ============================================================
 
 import logo from '../../assets/logo.png';
+import { enlaceInterno } from '../../utils/rutasCifradas';
 
 export default function Marca({ sufijo = '' }) {
   return (
-    <a className="marca" href="#/" aria-label="AltairTrends, ir al inicio">
+    <a className="marca" href={enlaceInterno('/')} aria-label="AltairTrends, ir al inicio">
       <img className="marca__logo" src={logo} alt="" />
       <span className="marca__nombre">
         Altair<span className="marca__nombre-trends">Trends</span>

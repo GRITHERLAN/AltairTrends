@@ -19,6 +19,7 @@ import { useAuth } from '../context/AuthContext';
 import { useAvisos } from '../context/AvisosContext';
 import { useProductos } from '../context/ProductosContext';
 import { requiereModificacion } from '../utils/formatos';
+import { enlaceInterno } from '../utils/rutasCifradas';
 import { FILTROS_INICIALES, filtrarProductos, obtenerCategorias } from '../utils/filtrarProductos';
 
 export default function PaginaAdmin() {
@@ -36,7 +37,7 @@ export default function PaginaAdmin() {
       <section className="contenedor vacio">
         <h1 className="vacio__titulo">Acceso restringido</h1>
         <p>Esta sección es solo para administradores. Inicia sesión con una cuenta de administrador.</p>
-        <a className="boton boton--primario" href="#/login">
+        <a className="boton boton--primario" href={enlaceInterno('/login')}>
           Iniciar sesión
         </a>
       </section>

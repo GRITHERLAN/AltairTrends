@@ -8,6 +8,8 @@ import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useAvisos } from '../../context/AvisosContext';
 import Marca from '../ui/Marca';
+import { irA } from '../../hooks/useRuta';
+import { enlaceInterno } from '../../utils/rutasCifradas';
 
 // Enlaces públicos de la navegación.
 const ENLACES = [
@@ -27,7 +29,7 @@ export default function Cabecera({ rutaActual }) {
     salir();
     setMenuAbierto(false);
     mostrarAviso('info', 'Has cerrado sesión correctamente.');
-    window.location.hash = '/';
+    irA('/');
   }
 
   // Devuelve la clase del enlace; marca como activo el de la página actual.
@@ -59,14 +61,14 @@ export default function Cabecera({ rutaActual }) {
           <ul className="cabecera__lista">
             {ENLACES.map((enlace) => (
               <li key={enlace.ruta}>
-                <a className={claseEnlace(enlace.nombre)} href={`#${enlace.ruta}`} onClick={() => setMenuAbierto(false)}>
+                <a className={claseEnlace(enlace.nombre)} href={enlaceInterno(enlace.ruta)} onClick={() => setMenuAbierto(false)}>
                   {enlace.texto}
                 </a>
               </li>
             ))}
             {esAdmin && (
               <li>
-                <a className={claseEnlace('admin')} href="#/admin" onClick={() => setMenuAbierto(false)}>
+                <a className={claseEnlace('admin')} href={enlaceInterno('/admin')} onClick={() => setMenuAbierto(false)}>
                   Panel Admin
                 </a>
               </li>
@@ -86,10 +88,10 @@ export default function Cabecera({ rutaActual }) {
               </>
             ) : (
               <>
-                <a className="boton boton--secundario boton--pequeno" href="#/login" onClick={() => setMenuAbierto(false)}>
+                <a className="boton boton--secundario boton--pequeno" href={enlaceInterno('/login')} onClick={() => setMenuAbierto(false)}>
                   Iniciar sesión
                 </a>
-                <a className="boton boton--primario boton--pequeno" href="#/registro" onClick={() => setMenuAbierto(false)}>
+                <a className="boton boton--primario boton--pequeno" href={enlaceInterno('/registro')} onClick={() => setMenuAbierto(false)}>
                   Registrarse
                 </a>
               </>

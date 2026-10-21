@@ -9,6 +9,7 @@ import { useAuth } from '../context/AuthContext';
 import { useProductos } from '../context/ProductosContext';
 import { useComprar } from '../hooks/useComprar';
 import { formatoCop } from '../utils/formatos';
+import { enlaceInterno } from '../utils/rutasCifradas';
 
 export default function PaginaProducto({ id }) {
   const { productos } = useProductos();
@@ -23,7 +24,7 @@ export default function PaginaProducto({ id }) {
       <section className="contenedor vacio">
         <h1 className="vacio__titulo">Producto no disponible</h1>
         <p>El producto que buscas no existe o ya no está disponible.</p>
-        <a className="boton boton--primario" href="#/">
+        <a className="boton boton--primario" href={enlaceInterno('/')}>
           Volver al catálogo
         </a>
       </section>
@@ -35,7 +36,7 @@ export default function PaginaProducto({ id }) {
   return (
     <article className="producto contenedor">
       <nav className="migas" aria-label="Ruta de navegación">
-        <a href="#/">Catálogo</a>
+        <a href={enlaceInterno('/')}>Catálogo</a>
         <span aria-hidden="true"> / </span>
         <span>{producto.categoria}</span>
         <span aria-hidden="true"> / </span>
@@ -79,7 +80,7 @@ export default function PaginaProducto({ id }) {
             >
               {agotado ? 'Agotado' : 'Comprar ahora'}
             </button>
-            <a className="boton boton--secundario boton--grande" href="#/">
+            <a className="boton boton--secundario boton--grande" href={enlaceInterno('/')}>
               ← Volver al catálogo
             </a>
           </div>
