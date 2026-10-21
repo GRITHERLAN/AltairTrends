@@ -38,7 +38,12 @@ Requerimientos:
     se agrupen en una leyenda "Otras" y en esa leyenda configures un modal para ver un breve resumen de
     las otras categoarias restantes.
 
-  - Haz que las leyendas de los ambos graficos (Categorias y Productos) queden en un menu desplegable en modo
-    responsive de celulares.
-- Pendiente:
+  - Haz que las leyendas de los ambos graficos (Categorias y Productos) queden 
+    en un menu desplegable en modo responsive de celulares.
+
   - Realiza un cifrado de las rutas(URL) para la navegacion de la pagina web entre enlaces internos
+  
+- Pendiente:
+  - quita la funcionalidad que disminuye el stock con el boton comprar de las cards que hay en catalogo y
+    de la pagina que muestra mas info del item. Osea que el boton comprar solo haga la funcion de
+    redirigir al enlace suministrado
