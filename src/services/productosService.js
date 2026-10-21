@@ -163,8 +163,8 @@ export function cambiarEstadoProducto(id) {
   return { ok: resultado.ok, productos: lista, error: resultado.error };
 }
 
-// Registra una compra: resta 1 unidad de stock (solo si hay y el producto está activo)
-// y suma 1 a los contadores de compras de la categoría y del producto.
+// Registra una compra. NO modifica el stock: el botón Comprar solo redirige al enlace de compra.
+// Sí suma 1 a los contadores de compras de la categoría y del producto (para los gráficos).
 export function comprarProducto(id) {
   const productos = obtenerProductos();
   const producto = productos.find((p) => p.id === id);
@@ -173,12 +173,8 @@ export function comprarProducto(id) {
   if (!producto.activo) return { ok: false, error: 'Este producto no está disponible actualmente.' };
   if (producto.stock <= 0) return { ok: false, error: 'Este producto está agotado.' };
 
-  const lista = productos.map((p) => (p.id === id ? { ...p, stock: p.stock - 1 } : p));
-  const resultado = escribir(CLAVES.productos, lista);
-  if (!resultado.ok) return { ok: false, error: resultado.error };
-
   // La compra ya es válida: se cuenta para las estadísticas de la categoría y del producto.
   const ventaCategoria = registrarVentaCategoria(producto.categoria);
   const ventaProducto = registrarVentaProducto(producto);
-  return { ok: true, producto: producto, productos: lista, ventas: ventaCategoria.ventas, ventasProducto: ventaProducto.ventasProducto };
+  return { ok: true, producto: producto, productos: productos, ventas: ventaCategoria.ventas, ventasProducto: ventaProducto.ventasProducto };
 }

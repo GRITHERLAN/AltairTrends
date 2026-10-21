@@ -18,7 +18,6 @@ import PaginaCatalogo from './pages/PaginaCatalogo';
 import PaginaContacto from './pages/PaginaContacto';
 import PaginaLogin from './pages/PaginaLogin';
 import PaginaProducto from './pages/PaginaProducto';
-import PaginaRegistro from './pages/PaginaRegistro';
 import PaginaSobreNosotros from './pages/PaginaSobreNosotros';
 
 // Elige la página según el nombre de la ruta.
@@ -32,8 +31,6 @@ function Paginas({ ruta }) {
       return <PaginaContacto />;
     case 'login':
       return <PaginaLogin />;
-    case 'registro':
-      return <PaginaRegistro />;
     case 'admin':
       return <PaginaAdmin />;
     default:

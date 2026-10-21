@@ -1,10 +1,10 @@
 // ============================================================
 // AuthContext.jsx
-// Guarda quién tiene la sesión iniciada y expone login, registro y logout.
+// Guarda quién tiene la sesión iniciada y expone login y logout.
 // ============================================================
 
 import { createContext, useContext, useState } from 'react';
-import { cerrarSesion, iniciarSesion, obtenerSesion, registrarUsuario } from '../services/usuariosService';
+import { cerrarSesion, iniciarSesion, obtenerSesion } from '../services/usuariosService';
 
 const AuthContext = createContext(null);
 
@@ -19,13 +19,6 @@ export function AuthProvider({ children }) {
     return resultado;
   }
 
-  // Registra una cuenta nueva y deja la sesión abierta.
-  async function registrar(datos) {
-    const resultado = await registrarUsuario(datos);
-    if (resultado.ok) setUsuario(resultado.usuario);
-    return resultado;
-  }
-
   // Cierra la sesión.
   function salir() {
     cerrarSesion();
@@ -34,7 +27,7 @@ export function AuthProvider({ children }) {
 
   const esAdmin = usuario !== null && usuario.rol === 'admin';
 
-  return <AuthContext.Provider value={{ usuario, esAdmin, entrar, registrar, salir }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ usuario, esAdmin, entrar, salir }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

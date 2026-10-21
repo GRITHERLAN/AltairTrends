@@ -76,7 +76,8 @@ export default function Cabecera({ rutaActual }) {
           </ul>
 
           <div className="cabecera__sesion">
-            {usuario ? (
+            {/* Sin sesión no se muestran botones: el login sigue disponible por su ruta */}
+            {usuario && (
               <>
                 <span className="cabecera__usuario">
                   Hola, {usuario.nombre.split(' ')[0]}
@@ -85,15 +86,6 @@ export default function Cabecera({ rutaActual }) {
                 <button type="button" className="boton boton--secundario boton--pequeno" onClick={manejarSalir}>
                   Cerrar sesión
                 </button>
-              </>
-            ) : (
-              <>
-                <a className="boton boton--secundario boton--pequeno" href={enlaceInterno('/login')} onClick={() => setMenuAbierto(false)}>
-                  Iniciar sesión
-                </a>
-                <a className="boton boton--primario boton--pequeno" href={enlaceInterno('/registro')} onClick={() => setMenuAbierto(false)}>
-                  Registrarse
-                </a>
               </>
             )}
           </div>

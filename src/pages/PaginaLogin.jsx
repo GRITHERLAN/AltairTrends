@@ -9,7 +9,6 @@ import { useAuth } from '../context/AuthContext';
 import { useAvisos } from '../context/AvisosContext';
 import { irA } from '../hooks/useRuta';
 import { ADMIN_SEMILLA } from '../services/usuariosService';
-import { enlaceInterno } from '../utils/rutasCifradas';
 
 export default function PaginaLogin() {
   const { entrar } = useAuth();
@@ -66,10 +65,6 @@ export default function PaginaLogin() {
         <button type="submit" className="boton boton--primario" disabled={cargando}>
           {cargando ? 'Ingresando...' : 'Ingresar'}
         </button>
-
-        <p className="formulario__pie">
-          ¿No tienes cuenta? <a href={enlaceInterno('/registro')}>Regístrate</a>
-        </p>
 
         <aside className="nota">
           <p className="nota__titulo">Acceso de administrador (prueba)</p>

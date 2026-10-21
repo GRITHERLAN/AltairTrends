@@ -1,6 +1,6 @@
 // ============================================================
 // usuariosService.js
-// Registro, login y sesión usando LocalStorage.
+// Login y sesión usando LocalStorage.
 // IMPORTANTE: LocalStorage no es un lugar seguro. Aquí las contraseñas
 // se guardan con hash (SHA-256) solo como buena práctica de ejemplo.
 // ============================================================
@@ -46,29 +46,6 @@ async function obtenerUsuarios() {
 // Quita datos sensibles (el hash) antes de entregar el usuario a la interfaz.
 function usuarioPublico(usuario) {
   return { nombre: usuario.nombre, correo: usuario.correo, rol: usuario.rol };
-}
-
-// Registra un usuario nuevo (siempre con rol "usuario").
-export async function registrarUsuario({ nombre, correo, contrasena }) {
-  const usuarios = await obtenerUsuarios();
-  const correoLimpio = correo.trim().toLowerCase();
-
-  if (usuarios.some((u) => u.correo === correoLimpio)) {
-    return { ok: false, errores: { correo: 'Ya existe una cuenta con este correo.' } };
-  }
-
-  const nuevo = {
-    nombre: nombre.trim(),
-    correo: correoLimpio,
-    hash: await hashContrasena(contrasena),
-    rol: 'usuario',
-  };
-  usuarios.push(nuevo);
-  const resultado = escribir(CLAVES.usuarios, usuarios);
-  if (!resultado.ok) return { ok: false, errores: { general: resultado.error } };
-
-  escribir(CLAVES.sesion, usuarioPublico(nuevo));
-  return { ok: true, usuario: usuarioPublico(nuevo) };
 }
 
 // Inicia sesión comparando correo y hash de la contraseña.

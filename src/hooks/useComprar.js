@@ -1,7 +1,7 @@
 // ============================================================
 // useComprar.js
 // Lógica del botón "Comprar" (la comparten la tarjeta y la página del producto):
-//   1) resta 1 unidad de stock,
+//   1) registra la compra para las estadísticas (sin tocar el stock),
 //   2) avisa visualmente,
 //   3) abre el enlace de compra configurado por el administrador.
 // ============================================================
