@@ -50,16 +50,16 @@ export default function PaginaContacto() {
 
   return (
     <section className="contenedor contacto" aria-labelledby="titulo-contacto">
-      <p className="etiqueta-seccion">Atención personalizada</p>
+      <p className="etiqueta-seccion">Atención al Cliente</p>
       <h1 id="titulo-contacto" className="titulo-seccion">
-        Comunícate Directamente con Nosotros
+        Estamos aquí para ayudarte
       </h1>
 
       <div className="contacto__rejilla">
         <div className="contacto__datos">
           <p className="bloque__texto">
-            Nuestro equipo de concierges y curadores está listo para asesorarte en adquisiciones, pedidos especiales o
-            consultas generales.
+            En AltairTrends queremos ofrecerte la mejor experiencia de compra. Si tienes preguntas sobre nuestros productos, 
+            pedidos o necesitas ayuda, estamos aquí para atenderte.
           </p>
           <ul className="contacto__lista">
             <li className="contacto__dato">
