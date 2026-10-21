@@ -9,6 +9,7 @@ import { useState } from 'react';
 import AlertaAntiguos from '../components/admin/AlertaAntiguos';
 import EditorContacto from '../components/admin/EditorContacto';
 import FiltrosAdmin from '../components/admin/FiltrosAdmin';
+import FormularioCategoria from '../components/admin/FormularioCategoria';
 import FormularioProducto from '../components/admin/FormularioProducto';
 import GraficoCategorias from '../components/admin/GraficoCategorias';
 import GraficoProductos from '../components/admin/GraficoProductos';
@@ -24,11 +25,11 @@ import { FILTROS_INICIALES, filtrarProductos, obtenerCategorias } from '../utils
 
 export default function PaginaAdmin() {
   const { esAdmin } = useAuth();
-  const { productos, ventas, ventasProducto, crear, actualizar, eliminar, cambiarEstado, restablecer } = useProductos();
+  const { productos, ventas, ventasProducto, categoriasExtra, agregarCategoria, crear, actualizar, eliminar, cambiarEstado, restablecer } = useProductos();
   const { mostrarAviso } = useAvisos();
 
   const [filtros, setFiltros] = useState(FILTROS_INICIALES);
-  // Qué modal está abierta: null | { tipo: 'formulario', producto } | { tipo: 'borrar', producto } | { tipo: 'restablecer' }
+  // Qué modal está abierta: null | { tipo: 'formulario', producto } | { tipo: 'categoria' } | { tipo: 'borrar', producto } | { tipo: 'restablecer' }
   const [modal, setModal] = useState(null);
 
   // Protección de la ruta: quien no sea admin ve un aviso en la propia página.
@@ -44,7 +45,8 @@ export default function PaginaAdmin() {
     );
   }
 
-  const categorias = obtenerCategorias(productos);
+  // Categorías de los productos + las creadas a mano (aunque aún no tengan productos).
+  const categorias = [...new Set([...obtenerCategorias(productos), ...categoriasExtra])].sort((a, b) => a.localeCompare(b, 'es'));
   const antiguos = productos.filter(requiereModificacion);
   const visibles = filtrarProductos(productos, filtros);
   const conteo = {
@@ -59,6 +61,16 @@ export default function PaginaAdmin() {
     if (resultado.ok) {
       setModal(null);
       mostrarAviso('exito', idOriginal === null ? `Producto "${resultado.producto.nombre}" creado.` : `Producto "${resultado.producto.nombre}" actualizado.`);
+    }
+    return resultado;
+  }
+
+  // Guarda la categoría nueva desde su modal y devuelve el resultado al formulario.
+  function guardarCategoria(nombre) {
+    const resultado = agregarCategoria(nombre, categorias);
+    if (resultado.ok) {
+      setModal(null);
+      mostrarAviso('exito', `Categoría "${resultado.categoria}" creada.`);
     }
     return resultado;
   }
@@ -98,6 +110,9 @@ export default function PaginaAdmin() {
         <div className="panel__acciones">
           <button type="button" className="boton boton--secundario" onClick={() => setModal({ tipo: 'restablecer' })}>
             Restablecer datos de prueba
+          </button>
+          <button type="button" className="boton boton--secundario" onClick={() => setModal({ tipo: 'categoria' })}>
+            Crear categoría
           </button>
           <button type="button" className="boton boton--primario" onClick={() => setModal({ tipo: 'formulario', producto: null })}>
             + Crear nuevo producto
@@ -142,6 +157,7 @@ export default function PaginaAdmin() {
       {modal && modal.tipo === 'formulario' && (
         <FormularioProducto producto={modal.producto} productos={productos} categorias={categorias} onGuardar={guardarProducto} onCerrar={() => setModal(null)} />
       )}
+      {modal && modal.tipo === 'categoria' && <FormularioCategoria categorias={categorias} onGuardar={guardarCategoria} onCerrar={() => setModal(null)} />}
       {modal && modal.tipo === 'borrar' && (
         <ModalConfirmacion
           titulo="Borrar producto"

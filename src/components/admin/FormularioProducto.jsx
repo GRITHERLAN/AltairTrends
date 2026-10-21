@@ -11,6 +11,7 @@
 import { useState } from 'react';
 import { validarProducto } from '../../services/productosService';
 import Campo from '../ui/Campo';
+import CampoCategoria from '../ui/CampoCategoria';
 import Modal from '../ui/Modal';
 import SubidaMultimedia from './SubidaMultimedia';
 
@@ -76,13 +77,8 @@ export default function FormularioProducto({ producto, productos, categorias, on
           <Campo id="producto-stock" tipo="number" min="0" step="1" etiqueta="Stock (cantidad de unidades)" valor={datos.stock} error={errores.stock} onCambio={(e) => cambiar('stock', e.target.value)} />
         </div>
 
-        {/* La categoría es un campo de texto con sugerencias (datalist): se puede elegir una existente o escribir una nueva */}
-        <Campo id="producto-categoria" etiqueta="Categoría" valor={datos.categoria} error={errores.categoria} list="lista-categorias" onCambio={(e) => cambiar('categoria', e.target.value)} />
-        <datalist id="lista-categorias">
-          {categorias.map((categoria) => (
-            <option key={categoria} value={categoria} />
-          ))}
-        </datalist>
+        {/* La categoría es un combobox: siempre despliega todas las existentes, o se puede escribir una nueva */}
+        <CampoCategoria id="producto-categoria" etiqueta="Categoría" valor={datos.categoria} error={errores.categoria} categorias={categorias} onCambio={(e) => cambiar('categoria', e.target.value)} />
 
         <Campo id="producto-descripcion" tipo="textarea" etiqueta="Descripción" valor={datos.descripcion} error={errores.descripcion} onCambio={(e) => cambiar('descripcion', e.target.value)} />
 

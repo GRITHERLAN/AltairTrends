@@ -196,6 +196,61 @@ textarea.campo__control {
   color: var(--color-texto-suave);
 }
 
+/* ---------- Combobox de categoría (CampoCategoria) ---------- */
+.combo {
+  position: relative;
+}
+
+/* Espacio a la derecha para que el texto no quede bajo la flecha. */
+.combo__entrada {
+  padding-right: var(--espacio-6);
+}
+
+.combo__flecha {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--espacio-6);
+  color: var(--color-texto-suave);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Lista desplegable: se superpone al contenido y se desplaza si hay muchas categorías. */
+.combo__lista {
+  position: absolute;
+  top: calc(100% + var(--espacio-1));
+  left: 0;
+  right: 0;
+  z-index: 10;
+  max-height: 22rem;
+  overflow-y: auto;
+  padding: var(--espacio-1);
+  list-style: none;
+  background: var(--color-fondo);
+  border: 0.1rem solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  box-shadow: var(--sombra);
+}
+
+.combo__opcion {
+  padding: var(--espacio-2) var(--espacio-3);
+  border-radius: var(--radio-pequeno);
+  cursor: pointer;
+}
+
+.combo__opcion:hover,
+.combo__opcion--activa {
+  background: var(--color-superficie-2);
+}
+
+.combo__opcion--elegida {
+  font-weight: 600;
+  color: var(--color-acento);
+}
+
 .casilla {
   display: flex;
   align-items: center;

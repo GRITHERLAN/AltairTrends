@@ -14,6 +14,7 @@ import {
   obtenerProductos,
   restablecerProductos,
 } from '../services/productosService';
+import { crearCategoria, obtenerCategoriasExtra, reiniciarCategoriasExtra } from '../services/categoriasService';
 import { obtenerVentasPorCategoria, obtenerVentasPorProducto } from '../services/ventasService';
 
 const ProductosContext = createContext(null);
@@ -24,6 +25,15 @@ export function ProductosProvider({ children }) {
   const [ventas, setVentas] = useState(() => obtenerVentasPorCategoria());
   // Compras acumuladas por producto: { idProducto: { nombre, cantidad } }.
   const [ventasProducto, setVentasProducto] = useState(() => obtenerVentasPorProducto());
+  // Categorías creadas a mano por el administrador (pueden no tener productos todavía).
+  const [categoriasExtra, setCategoriasExtra] = useState(() => obtenerCategoriasExtra());
+
+  // Crea una categoría extra. "existentes" son todas las categorías que ya conoce el panel.
+  function agregarCategoria(nombre, existentes) {
+    const resultado = crearCategoria(nombre, existentes);
+    if (resultado.ok) setCategoriasExtra(resultado.categoriasExtra);
+    return resultado;
+  }
 
   // Cada acción llama al servicio y, si todo salió bien, actualiza el estado.
   function crear(datos) {
@@ -66,12 +76,13 @@ export function ProductosProvider({ children }) {
       setProductos(resultado.productos);
       setVentas(resultado.ventas);
       setVentasProducto(resultado.ventasProducto);
+      setCategoriasExtra(reiniciarCategoriasExtra());
     }
     return resultado;
   }
 
   return (
-    <ProductosContext.Provider value={{ productos, ventas, ventasProducto, crear, actualizar, eliminar, cambiarEstado, comprar, restablecer }}>
+    <ProductosContext.Provider value={{ productos, ventas, ventasProducto, categoriasExtra, agregarCategoria, crear, actualizar, eliminar, cambiarEstado, comprar, restablecer }}>
       {children}
     </ProductosContext.Provider>
   );
