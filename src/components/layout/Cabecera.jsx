@@ -4,7 +4,7 @@
 // En pantallas pequeñas la navegación se abre con un botón (menú hamburguesa).
 // ============================================================
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useAvisos } from '../../context/AvisosContext';
 import Marca from '../ui/Marca';
@@ -22,11 +22,24 @@ export default function Cabecera({ rutaActual }) {
   const { usuario, esAdmin, salir } = useAuth();
   const { mostrarAviso } = useAvisos();
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const botonMenuRef = useRef(null);
+
+  // Teclado: con el menú móvil abierto, Escape lo cierra y devuelve el foco al botón "Menú".
+  useEffect(() => {
+    if (!menuAbierto) return undefined;
+    function alPulsarTecla(evento) {
+      if (evento.key !== 'Escape') return;
+      setMenuAbierto(false);
+      botonMenuRef.current?.focus();
+    }
+    document.addEventListener('keydown', alPulsarTecla);
+    return () => document.removeEventListener('keydown', alPulsarTecla);
+  }, [menuAbierto]);
 
   // Cierra sesión y avisa visualmente.
-  function manejarSalir(evento) {
+  async function manejarSalir(evento) {
     evento.preventDefault();
-    salir();
+    await salir();
     setMenuAbierto(false);
     mostrarAviso('info', 'Has cerrado sesión correctamente.');
     irA('/');
@@ -44,6 +57,7 @@ export default function Cabecera({ rutaActual }) {
         <Marca />
 
         <button
+          ref={botonMenuRef}
           type="button"
           className="cabecera__menu-boton"
           aria-expanded={menuAbierto}

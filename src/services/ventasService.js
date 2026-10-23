@@ -1,69 +1,40 @@
 // ============================================================
 // ventasService.js
 // Contadores de compras que alimentan los gráficos estadísticos del
-// panel de administración. Hay dos, guardados aparte de los productos:
+// panel de administración. Viven en dos tablas de Supabase:
 //
-//   1) Por categoría:  { 'Joyería Fina': 4, 'Perfumería': 2, ... }
-//   2) Por producto:   { 'PRD-001': { nombre: 'Reloj Aurora', cantidad: 3 }, ... }
+//   1) ventas_categoria -> se entrega como { 'Joyería Fina': 4, 'Perfumería': 2, ... }
+//   2) ventas_producto  -> se entrega como { 'ALT-101': { nombre: 'Reloj...', cantidad: 3 }, ... }
 //
-// Al guardarlos aparte, el histórico no se pierde si el administrador borra
-// un producto o le cambia la categoría. En el contador por producto se guarda
-// también el nombre para poder seguir mostrando un producto ya borrado.
+// Se guardan aparte de los productos para que el histórico no se pierda si el
+// administrador borra un producto o le cambia la categoría. Solo el Administrador
+// puede leerlas (RLS); los visitantes solo las incrementan con registrar_compra().
 // ============================================================
 
-import { CLAVES, leer, escribir } from './almacenamiento';
-
-// Lee un contador guardado. Si no existe o está dañado, devuelve un objeto vacío.
-function leerContador(clave) {
-  const guardado = leer(clave, {});
-  const esObjeto = guardado !== null && typeof guardado === 'object' && !Array.isArray(guardado);
-  return esObjeto ? guardado : {};
-}
-
-// ---------- Por categoría ----------
+import { mensajeDeError } from './erroresSupabase';
+import { supabase } from './supabaseCliente';
 
 // Devuelve el contador completo de compras por categoría.
-export function obtenerVentasPorCategoria() {
-  return leerContador(CLAVES.ventasCategoria);
+export async function obtenerVentasPorCategoria() {
+  const { data, error } = await supabase.from('ventas_categoria').select('categoria, cantidad');
+  if (error) return { ok: false, ventas: {}, error: mensajeDeError(error) };
+
+  // Se convierte la lista de filas en el objeto que usan los gráficos.
+  const ventas = {};
+  data.forEach((fila) => {
+    ventas[fila.categoria] = fila.cantidad;
+  });
+  return { ok: true, ventas };
 }
-
-// Suma 1 compra a la categoría indicada y devuelve el contador actualizado.
-export function registrarVentaCategoria(categoria) {
-  const ventas = obtenerVentasPorCategoria();
-  const actualizadas = { ...ventas, [categoria]: (Number(ventas[categoria]) || 0) + 1 };
-
-  const resultado = escribir(CLAVES.ventasCategoria, actualizadas);
-  // Si no se pudo guardar, se devuelve el contador anterior para no mostrar datos falsos.
-  return { ok: resultado.ok, ventas: resultado.ok ? actualizadas : ventas, error: resultado.error };
-}
-
-// ---------- Por producto ----------
 
 // Devuelve el contador completo de compras por producto.
-export function obtenerVentasPorProducto() {
-  return leerContador(CLAVES.ventasProducto);
-}
+export async function obtenerVentasPorProducto() {
+  const { data, error } = await supabase.from('ventas_producto').select('producto_id, nombre, cantidad');
+  if (error) return { ok: false, ventasProducto: {}, error: mensajeDeError(error) };
 
-// Suma 1 compra al producto indicado (se identifica por su ID) y actualiza su nombre guardado.
-export function registrarVentaProducto(producto) {
-  const ventas = obtenerVentasPorProducto();
-  const cantidadActual = Number(ventas[producto.id]?.cantidad) || 0;
-  const actualizadas = { ...ventas, [producto.id]: { nombre: producto.nombre, cantidad: cantidadActual + 1 } };
-
-  const resultado = escribir(CLAVES.ventasProducto, actualizadas);
-  return { ok: resultado.ok, ventasProducto: resultado.ok ? actualizadas : ventas, error: resultado.error };
-}
-
-// ---------- Reinicio ----------
-
-// Pone en cero AMBOS contadores (se usa al restablecer los datos de prueba).
-export function reiniciarVentas() {
-  const porCategoria = escribir(CLAVES.ventasCategoria, {});
-  const porProducto = escribir(CLAVES.ventasProducto, {});
-  return {
-    ok: porCategoria.ok && porProducto.ok,
-    ventas: {},
-    ventasProducto: {},
-    error: porCategoria.error ?? porProducto.error,
-  };
+  const ventasProducto = {};
+  data.forEach((fila) => {
+    ventasProducto[fila.producto_id] = { nombre: fila.nombre, cantidad: fila.cantidad };
+  });
+  return { ok: true, ventasProducto };
 }

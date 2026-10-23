@@ -9,3 +9,9 @@ Requerimientos.md
 .claude
 settings.json
 settings.local.json
+Security.md
+.env
+.env.local
+supabase
+# Informe de auditoría de seguridad (describe defensas internas: no publicar)
+Auditoria_Seguridad.md

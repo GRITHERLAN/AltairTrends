@@ -2,23 +2,34 @@
 // SubidaMultimedia.jsx
 // Permite agregar imágenes y videos a un producto:
 //   - por URL (imágenes o videos), o
-//   - subiendo una imagen desde el equipo (se reduce de tamaño y se
-//     guarda como texto base64 para que quepa en LocalStorage).
-// Los videos pesan demasiado para LocalStorage, por eso solo van por URL.
+//   - eligiendo archivos desde el equipo. Las imágenes se reducen de tamaño
+//     antes de subirlas; los videos (MP4/WEBM) se suben tal cual (máx. 20 MB).
+//
+// Los archivos del equipo NO se suben aquí: quedan "pendientes" con una
+// vista previa local y se suben a Supabase Storage al guardar el producto
+// (ver multimediaService). Así, si se cancela el formulario, no queda nada
+// subido sin usar.
 // ============================================================
 
 import { useState } from 'react';
+import { TAMANO_MAXIMO, formatoPermitido } from '../../services/multimediaService';
 import { esUrlValida } from '../../services/productosService';
 import MediaProducto from '../catalogo/MediaProducto';
 
 // Ancho/alto máximo (en píxeles) al que se reducen las imágenes subidas.
-const LADO_MAXIMO = 800;
+const LADO_MAXIMO = 1200;
+
+// Máximo de elementos por producto (igual que en la base de datos).
+const MAXIMO_ELEMENTOS = 20;
 
 // Extensiones que se reconocen como video cuando se pega una URL.
 const EXTENSIONES_VIDEO = ['.mp4', '.webm', '.ogg', '.mov'];
 
-// Lee un archivo de imagen, lo reduce con un canvas y devuelve un texto "data URL" (JPEG).
+// Lee un archivo de imagen, lo reduce con un canvas y devuelve un archivo JPEG (Blob).
+// Los GIF se dejan tal cual para no perder la animación.
 function comprimirImagen(archivo) {
+  if (archivo.type === 'image/gif') return Promise.resolve(archivo);
+
   return new Promise((resolver, rechazar) => {
     const urlTemporal = URL.createObjectURL(archivo);
     const imagen = new Image();
@@ -31,7 +42,7 @@ function comprimirImagen(archivo) {
       lienzo.height = Math.round(imagen.height * factor);
       lienzo.getContext('2d').drawImage(imagen, 0, 0, lienzo.width, lienzo.height);
       URL.revokeObjectURL(urlTemporal);
-      resolver(lienzo.toDataURL('image/jpeg', 0.75));
+      lienzo.toBlob((blob) => (blob ? resolver(blob) : rechazar(new Error('No se pudo comprimir la imagen.'))), 'image/jpeg', 0.82);
     };
     imagen.onerror = () => {
       URL.revokeObjectURL(urlTemporal);
@@ -54,13 +65,17 @@ export default function SubidaMultimedia({ multimedia, onCambiar }) {
       setMensaje('Ingresa una URL válida que empiece por http:// o https://.');
       return;
     }
+    if (multimedia.length >= MAXIMO_ELEMENTOS) {
+      setMensaje(`Un producto puede tener como máximo ${MAXIMO_ELEMENTOS} imágenes o videos.`);
+      return;
+    }
     const esVideo = EXTENSIONES_VIDEO.some((extension) => limpia.toLowerCase().split('?')[0].endsWith(extension));
     onCambiar([...multimedia, { tipo: esVideo ? 'video' : 'imagen', url: limpia }]);
     setUrl('');
     setMensaje('');
   }
 
-  // Procesa los archivos elegidos desde el equipo.
+  // Procesa los archivos elegidos desde el equipo y los deja pendientes de subir.
   async function agregarArchivos(evento) {
     const archivos = Array.from(evento.target.files);
     evento.target.value = ''; // Permite volver a elegir el mismo archivo.
@@ -68,13 +83,25 @@ export default function SubidaMultimedia({ multimedia, onCambiar }) {
     let aviso = '';
 
     for (const archivo of archivos) {
-      if (!archivo.type.startsWith('image/')) {
-        aviso = 'Solo se pueden subir imágenes desde el equipo. Los videos se agregan con una URL.';
+      if (nuevos.length >= MAXIMO_ELEMENTOS) {
+        aviso = `Un producto puede tener como máximo ${MAXIMO_ELEMENTOS} imágenes o videos.`;
+        break;
+      }
+      if (!formatoPermitido(archivo.type)) {
+        aviso = 'Formato no permitido. Usa imágenes JPG, PNG, WEBP o GIF, o videos MP4 o WEBM.';
         continue;
       }
+
+      const esVideo = archivo.type.startsWith('video/');
       try {
-        const datos = await comprimirImagen(archivo);
-        nuevos = [...nuevos, { tipo: 'imagen', url: datos }];
+        // Las imágenes se comprimen; los videos se usan tal cual.
+        const listo = esVideo ? archivo : await comprimirImagen(archivo);
+        if (listo.size > TAMANO_MAXIMO) {
+          aviso = 'Cada archivo puede pesar como máximo 20 MB.';
+          continue;
+        }
+        // "url" es una vista previa local; "archivo" es lo que se subirá al guardar.
+        nuevos = [...nuevos, { tipo: esVideo ? 'video' : 'imagen', url: URL.createObjectURL(listo), archivo: listo }];
       } catch (error) {
         aviso = 'No se pudo procesar una de las imágenes.';
       }
@@ -83,8 +110,10 @@ export default function SubidaMultimedia({ multimedia, onCambiar }) {
     setMensaje(aviso);
   }
 
-  // Quita un elemento de la lista por su posición.
+  // Quita un elemento de la lista por su posición (y libera su vista previa local).
   function quitar(posicion) {
+    const medio = multimedia[posicion];
+    if (medio.archivo) URL.revokeObjectURL(medio.url);
     onCambiar(multimedia.filter((_, i) => i !== posicion));
   }
 
@@ -113,9 +142,16 @@ export default function SubidaMultimedia({ multimedia, onCambiar }) {
 
       <div className="multimedia__entrada">
         <label className="campo__etiqueta" htmlFor="multimedia-archivo">
-          O subir imágenes desde tu equipo
+          O subir imágenes y videos desde tu equipo (máx. 20 MB cada uno)
         </label>
-        <input id="multimedia-archivo" type="file" accept="image/*" multiple className="campo__control" onChange={agregarArchivos} />
+        <input
+          id="multimedia-archivo"
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm"
+          multiple
+          className="campo__control"
+          onChange={agregarArchivos}
+        />
       </div>
 
       {mensaje && (
@@ -131,6 +167,7 @@ export default function SubidaMultimedia({ multimedia, onCambiar }) {
               <div className="multimedia__vista">
                 <MediaProducto medio={medio} nombre={`Elemento ${posicion + 1}`} />
               </div>
+              {medio.archivo && <span className="campo__ayuda">Se subirá al guardar</span>}
               <button type="button" className="boton boton--peligro boton--pequeno" onClick={() => quitar(posicion)}>
                 Quitar
               </button>

@@ -3,7 +3,8 @@
 // Ventana modal para crear una categoría: un solo campo y el botón Guardar.
 // Validación en dos niveles:
 //   1) FrontEnd: validarCategoria (obligatoria y sin repetir) al escribir/enviar.
-//   2) BackEnd: categoriasService vuelve a validar al guardar (onGuardar).
+//   2) BackEnd: categoriasService vuelve a validar y la base de datos impide
+//      repetidos con su restricción UNIQUE (onGuardar).
 // ============================================================
 
 import { useState } from 'react';
@@ -14,8 +15,10 @@ import Modal from '../ui/Modal';
 export default function FormularioCategoria({ categorias, onGuardar, onCerrar }) {
   const [nombre, setNombre] = useState('');
   const [error, setError] = useState('');
+  // true mientras se espera la respuesta de Supabase.
+  const [guardando, setGuardando] = useState(false);
 
-  function manejarEnvio(evento) {
+  async function manejarEnvio(evento) {
     evento.preventDefault();
 
     // 1) Validación de FrontEnd.
@@ -26,8 +29,12 @@ export default function FormularioCategoria({ categorias, onGuardar, onCerrar })
     }
 
     // 2) Guardado: el servicio (BackEnd) valida otra vez y puede devolver un error.
-    const resultado = onGuardar(nombre);
-    if (!resultado.ok) setError(resultado.error);
+    setGuardando(true);
+    const resultado = await onGuardar(nombre);
+    if (!resultado.ok) {
+      setError(resultado.error);
+      setGuardando(false);
+    }
   }
 
   return (
@@ -50,8 +57,8 @@ export default function FormularioCategoria({ categorias, onGuardar, onCerrar })
           <button type="button" className="boton boton--secundario" onClick={onCerrar}>
             Cancelar
           </button>
-          <button type="submit" className="boton boton--primario">
-            Guardar
+          <button type="submit" className="boton boton--primario" disabled={guardando}>
+            {guardando ? 'Guardando...' : 'Guardar'}
           </button>
         </div>
       </form>

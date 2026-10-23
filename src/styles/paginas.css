@@ -242,6 +242,69 @@
   color: var(--color-texto-suave);
 }
 
+/* ---------- Documentos legales (privacidad, términos, cookies) ---------- */
+.legal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-5);
+  max-width: 90rem;
+}
+
+.legal__cabecera {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+}
+
+.legal__vigencia {
+  font-size: 1.3rem;
+  color: var(--color-texto-suave);
+}
+
+.legal__seccion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+}
+
+.legal__subtitulo {
+  font-size: 2rem;
+}
+
+.legal__lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+  max-width: 80rem;
+  padding-left: var(--espacio-5);
+  color: var(--color-texto-suave);
+  list-style: disc;
+}
+
+.legal__datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+  gap: var(--espacio-3);
+}
+
+.legal__datos dt {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+  color: var(--color-acento);
+}
+
+.legal__datos dd {
+  overflow-wrap: anywhere;
+}
+
+.legal__otros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-3);
+}
+
 .indicadores {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));

@@ -1,12 +1,14 @@
 // ============================================================
 // EditorContacto.jsx
 // Edición (solo Administrador) de correo, teléfono, descripción de
-// marca e indicadores. Los cambios se reflejan en la web pública.
+// marca e indicadores. Los cambios se guardan en Supabase y se reflejan
+// en la web pública.
 // ============================================================
 
 import { useState } from 'react';
 import { useAvisos } from '../../context/AvisosContext';
 import { useConfig } from '../../context/ConfigContext';
+import { LIMITES_INDICADOR } from '../../services/configService';
 import Campo from '../ui/Campo';
 
 export default function EditorContacto() {
@@ -14,6 +16,8 @@ export default function EditorContacto() {
   const { mostrarAviso } = useAvisos();
   const [datos, setDatos] = useState(config);
   const [errores, setErrores] = useState({});
+  // true mientras se espera la respuesta de Supabase (desactiva el botón Guardar).
+  const [guardando, setGuardando] = useState(false);
 
   // Cambia un indicador concreto (por posición) y un campo suyo (valor, etiqueta, detalle).
   function cambiarIndicador(posicion, campo, valor) {
@@ -36,9 +40,11 @@ export default function EditorContacto() {
     setErrores({ ...errores, indicadores: undefined });
   }
 
-  function manejarEnvio(evento) {
+  async function manejarEnvio(evento) {
     evento.preventDefault();
-    const resultado = actualizarConfig(datos);
+    setGuardando(true);
+    const resultado = await actualizarConfig(datos);
+    setGuardando(false);
 
     if (!resultado.ok) {
       setErrores(resultado.errores);
@@ -71,11 +77,12 @@ export default function EditorContacto() {
         )}
 
         <div className="formulario__rejilla">
-          <Campo id="config-correo" tipo="email" etiqueta="Correo electrónico" valor={datos.correo} error={errores.correo} onCambio={(e) => setDatos({ ...datos, correo: e.target.value })} />
-          <Campo id="config-telefono" tipo="tel" etiqueta="Teléfono" valor={datos.telefono} error={errores.telefono} onCambio={(e) => setDatos({ ...datos, telefono: e.target.value })} />
+          {/* maxLength: los mismos límites que valida la base de datos */}
+          <Campo id="config-correo" tipo="email" etiqueta="Correo electrónico" maxLength={120} valor={datos.correo} error={errores.correo} onCambio={(e) => setDatos({ ...datos, correo: e.target.value })} />
+          <Campo id="config-telefono" tipo="tel" etiqueta="Teléfono" maxLength={30} valor={datos.telefono} error={errores.telefono} onCambio={(e) => setDatos({ ...datos, telefono: e.target.value })} />
         </div>
 
-        <Campo id="config-descripcion" tipo="textarea" etiqueta="Descripción de marca" valor={datos.descripcion} error={errores.descripcion} onCambio={(e) => setDatos({ ...datos, descripcion: e.target.value })} />
+        <Campo id="config-descripcion" tipo="textarea" etiqueta="Descripción de marca" maxLength={3000} valor={datos.descripcion} error={errores.descripcion} onCambio={(e) => setDatos({ ...datos, descripcion: e.target.value })} />
 
         <fieldset className="indicadores-editor">
           <legend className="campo__etiqueta">Indicadores</legend>
@@ -88,9 +95,9 @@ export default function EditorContacto() {
           {datos.indicadores.length === 0 && <p className="indicadores-editor__vacio">Aún no hay indicadores. Usa el botón "Agregar indicador" para crear el primero.</p>}
           {datos.indicadores.map((indicador, posicion) => (
             <div key={posicion} className="indicadores-editor__fila">
-              <Campo id={`indicador-valor-${posicion}`} etiqueta={`Indicador ${posicion + 1}: valor`} valor={indicador.valor} onCambio={(e) => cambiarIndicador(posicion, 'valor', e.target.value)} />
-              <Campo id={`indicador-etiqueta-${posicion}`} etiqueta="Nombre" valor={indicador.etiqueta} onCambio={(e) => cambiarIndicador(posicion, 'etiqueta', e.target.value)} />
-              <Campo id={`indicador-detalle-${posicion}`} etiqueta="Detalle" valor={indicador.detalle} onCambio={(e) => cambiarIndicador(posicion, 'detalle', e.target.value)} />
+              <Campo id={`indicador-valor-${posicion}`} etiqueta={`Indicador ${posicion + 1}: valor`} maxLength={LIMITES_INDICADOR.valor} valor={indicador.valor} onCambio={(e) => cambiarIndicador(posicion, 'valor', e.target.value)} />
+              <Campo id={`indicador-etiqueta-${posicion}`} etiqueta="Nombre" maxLength={LIMITES_INDICADOR.etiqueta} valor={indicador.etiqueta} onCambio={(e) => cambiarIndicador(posicion, 'etiqueta', e.target.value)} />
+              <Campo id={`indicador-detalle-${posicion}`} etiqueta="Detalle" maxLength={LIMITES_INDICADOR.detalle} valor={indicador.detalle} onCambio={(e) => cambiarIndicador(posicion, 'detalle', e.target.value)} />
               {/* type="button" para que no envíe el formulario */}
               <button type="button" className="boton boton--peligro boton--pequeno indicadores-editor__quitar" aria-label={`Quitar indicador ${posicion + 1}`} onClick={() => quitarIndicador(posicion)}>
                 Quitar
@@ -102,8 +109,8 @@ export default function EditorContacto() {
           </button>
         </fieldset>
 
-        <button type="submit" className="boton boton--primario">
-          Guardar información
+        <button type="submit" className="boton boton--primario" disabled={guardando}>
+          {guardando ? 'Guardando...' : 'Guardar información'}
         </button>
       </form>
     </section>

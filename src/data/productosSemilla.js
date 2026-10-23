@@ -1,7 +1,8 @@
 // ============================================================
 // productosSemilla.js
-// 10 productos de prueba. Se cargan solo si LocalStorage está vacío
-// (o cuando el administrador pulsa "Restablecer datos de prueba").
+// 10 productos de prueba. Se cargan en Supabase cuando el administrador
+// pulsa "Restablecer datos de prueba" (la primera carga la hace la
+// migración SQL supabase/migrations/..._datos_iniciales.sql).
 // No tienen imágenes: la web muestra un marcador con el logo.
 // ============================================================
 

@@ -1,21 +1,29 @@
 // ============================================================
 // PaginaContacto.jsx
 // Datos de contacto (editables por el admin) + formulario de mensaje.
-// El mensaje se guarda en LocalStorage y la confirmación se ve en pantalla.
+// El mensaje se envía a Supabase, que lo guarda CIFRADO (solo lo lee el
+// Administrador), y la confirmación se ve en pantalla.
+//
+// Protección de datos y anti-bots:
+//   - Casilla de autorización obligatoria y SIN marcar por defecto (Ley 1581 de 2012).
+//   - Campo trampa ("honeypot") oculto: las personas no lo ven; los bots lo rellenan.
 // ============================================================
 
 import { useState } from 'react';
 import Campo from '../components/ui/Campo';
 import { useConfig } from '../context/ConfigContext';
-import { guardarMensajeContacto } from '../services/configService';
+import { LIMITES_MENSAJE, guardarMensajeContacto, validarMensajeContacto } from '../services/configService';
+import { enlaceInterno } from '../utils/rutasCifradas';
 
-const FORMULARIO_VACIO = { nombre: '', correo: '', mensaje: '' };
+const FORMULARIO_VACIO = { nombre: '', correo: '', mensaje: '', aceptaPolitica: false, trampa: '' };
 
 export default function PaginaContacto() {
   const { config } = useConfig();
   const [datos, setDatos] = useState(FORMULARIO_VACIO);
   const [errores, setErrores] = useState({});
   const [enviado, setEnviado] = useState(false);
+  // true mientras se envía el mensaje a Supabase.
+  const [enviando, setEnviando] = useState(false);
 
   // Actualiza un campo y limpia su error al escribir.
   function cambiar(campo, valor) {
@@ -24,23 +32,22 @@ export default function PaginaContacto() {
     setEnviado(false);
   }
 
-  function manejarEnvio(evento) {
+  async function manejarEnvio(evento) {
     evento.preventDefault();
 
-    // Validaciones del formulario.
-    const nuevos = {};
-    if (datos.nombre.trim() === '') nuevos.nombre = 'Escribe tu nombre.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(datos.correo.trim())) nuevos.correo = 'Ingresa un correo válido.';
-    if (datos.mensaje.trim().length < 10) nuevos.mensaje = 'El mensaje debe tener al menos 10 caracteres.';
-
+    // 1) Validación de FrontEnd (los mismos límites que vuelve a comprobar el servidor).
+    const nuevos = validarMensajeContacto(datos);
     if (Object.keys(nuevos).length > 0) {
       setErrores(nuevos);
       return;
     }
 
-    const resultado = guardarMensajeContacto(datos);
+    // 2) Envío: el servidor valida otra vez, aplica los límites anti-bots y cifra el mensaje.
+    setEnviando(true);
+    const resultado = await guardarMensajeContacto(datos);
+    setEnviando(false);
     if (!resultado.ok) {
-      setErrores({ general: resultado.error });
+      setErrores(resultado.errores);
       return;
     }
     setDatos(FORMULARIO_VACIO);
@@ -87,12 +94,45 @@ export default function PaginaContacto() {
             </p>
           )}
 
-          <Campo id="contacto-nombre" etiqueta="Nombre" valor={datos.nombre} error={errores.nombre} onCambio={(e) => cambiar('nombre', e.target.value)} />
-          <Campo id="contacto-correo" tipo="email" etiqueta="Correo electrónico" valor={datos.correo} error={errores.correo} onCambio={(e) => cambiar('correo', e.target.value)} />
-          <Campo id="contacto-mensaje" tipo="textarea" etiqueta="Mensaje" valor={datos.mensaje} error={errores.mensaje} onCambio={(e) => cambiar('mensaje', e.target.value)} />
+          <Campo id="contacto-nombre" etiqueta="Nombre" autoComplete="name" maxLength={LIMITES_MENSAJE.nombre} valor={datos.nombre} error={errores.nombre} onCambio={(e) => cambiar('nombre', e.target.value)} />
+          <Campo id="contacto-correo" tipo="email" etiqueta="Correo electrónico" autoComplete="email" maxLength={LIMITES_MENSAJE.correo} valor={datos.correo} error={errores.correo} onCambio={(e) => cambiar('correo', e.target.value)} />
+          <Campo id="contacto-mensaje" tipo="textarea" etiqueta="Mensaje" maxLength={LIMITES_MENSAJE.mensaje} valor={datos.mensaje} error={errores.mensaje} onCambio={(e) => cambiar('mensaje', e.target.value)} />
 
-          <button type="submit" className="boton boton--primario">
-            Enviar mensaje
+          {/* Campo trampa (honeypot): fuera de la vista, del teclado y de los lectores de pantalla.
+              Una persona nunca lo rellena; si llega con texto, el servidor descarta el mensaje. */}
+          <div className="trampa" aria-hidden="true">
+            <label htmlFor="contacto-sitio-web">Sitio web</label>
+            <input id="contacto-sitio-web" type="text" tabIndex={-1} autoComplete="off" value={datos.trampa} onChange={(e) => cambiar('trampa', e.target.value)} />
+          </div>
+
+          {/* Autorización previa, expresa e informada: empieza SIN marcar (el silencio no es autorización) */}
+          <div className={`campo ${errores.aceptaPolitica ? 'campo--error' : ''}`}>
+            <label className="casilla casilla--legal" htmlFor="contacto-autorizacion">
+              <input
+                id="contacto-autorizacion"
+                type="checkbox"
+                checked={datos.aceptaPolitica}
+                aria-invalid={errores.aceptaPolitica ? true : undefined}
+                aria-describedby={errores.aceptaPolitica ? 'contacto-autorizacion-error' : undefined}
+                onChange={(e) => cambiar('aceptaPolitica', e.target.checked)}
+              />
+              <span>
+                Autorizo a AltairTrends a tratar mis datos personales (nombre, correo y mensaje) para responder mi solicitud, según la{' '}
+                <a href={enlaceInterno('/privacidad')} target="_blank" rel="noopener">
+                  Política de Tratamiento de Datos Personales
+                </a>
+                .
+              </span>
+            </label>
+            {errores.aceptaPolitica && (
+              <p id="contacto-autorizacion-error" className="campo__error" role="alert">
+                {errores.aceptaPolitica}
+              </p>
+            )}
+          </div>
+
+          <button type="submit" className="boton boton--primario" disabled={enviando}>
+            {enviando ? 'Enviando...' : 'Enviar mensaje'}
           </button>
         </form>
       </div>

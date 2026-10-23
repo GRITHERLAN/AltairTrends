@@ -180,8 +180,16 @@
   text-align: right;
 }
 
-.pie__legal {
+.pie__legal,
+.pie__documentos {
   grid-column: 1 / -1;
+}
+
+.pie__documentos-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-2) var(--espacio-5);
+  font-size: 1.3rem;
 }
 
 /* ---------- Botón fijo de WhatsApp (esquina inferior izquierda) ---------- */

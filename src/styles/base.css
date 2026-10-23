@@ -81,6 +81,28 @@ button:disabled {
   outline-offset: 0.2rem;
 }
 
+/* El contenido principal recibe el foco al cambiar de página: no necesita marco. */
+.principal:focus {
+  outline: none;
+}
+
+/* Enlace "Saltar al contenido": oculto hasta que se llega a él con el teclado. */
+.saltar-contenido {
+  position: absolute;
+  top: -10rem;
+  left: var(--espacio-4);
+  z-index: 100;
+  padding: var(--espacio-2) var(--espacio-4);
+  color: var(--color-negro);
+  font-weight: 700;
+  background: var(--color-champan);
+  border-radius: var(--radio-pequeno);
+}
+
+.saltar-contenido:focus {
+  top: var(--espacio-2);
+}
+
 /* Texto solo para lectores de pantalla. */
 .sr-solo {
   position: absolute;

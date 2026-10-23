@@ -1,8 +1,8 @@
 // ============================================================
 // PaginaAdmin.jsx
 // Panel de administración: resumen, alerta de productos antiguos, filtros,
-// tabla con CRUD, y edición de contacto/indicadores.
-// Solo accesible para el rol "admin".
+// tabla con CRUD y edición de contacto/indicadores.
+// Solo accesible para el rol "admin" (y Supabase lo vuelve a comprobar con RLS).
 // ============================================================
 
 import { useState } from 'react';
@@ -25,7 +25,8 @@ import { FILTROS_INICIALES, filtrarProductos, obtenerCategorias } from '../utils
 
 export default function PaginaAdmin() {
   const { esAdmin } = useAuth();
-  const { productos, ventas, ventasProducto, categoriasExtra, agregarCategoria, crear, actualizar, eliminar, cambiarEstado, restablecer } = useProductos();
+  const { productos, ventas, ventasProducto, categoriasExtra, cargadoComoAdmin, agregarCategoria, crear, actualizar, eliminar, cambiarEstado, restablecer } =
+    useProductos();
   const { mostrarAviso } = useAvisos();
 
   const [filtros, setFiltros] = useState(FILTROS_INICIALES);
@@ -45,6 +46,15 @@ export default function PaginaAdmin() {
     );
   }
 
+  // Justo después de iniciar sesión todavía se están descargando los datos completos del admin.
+  if (!cargadoComoAdmin) {
+    return (
+      <section className="contenedor vacio" aria-live="polite">
+        <p className="vacio__titulo">Cargando panel de administración...</p>
+      </section>
+    );
+  }
+
   // Categorías de los productos + las creadas a mano (aunque aún no tengan productos).
   const categorias = [...new Set([...obtenerCategorias(productos), ...categoriasExtra])].sort((a, b) => a.localeCompare(b, 'es'));
   const antiguos = productos.filter(requiereModificacion);
@@ -56,8 +66,8 @@ export default function PaginaAdmin() {
   };
 
   // Guarda desde el formulario (crear o editar) y devuelve el resultado al formulario.
-  function guardarProducto(datos, idOriginal) {
-    const resultado = idOriginal === null ? crear(datos) : actualizar(idOriginal, datos);
+  async function guardarProducto(datos, idOriginal) {
+    const resultado = idOriginal === null ? await crear(datos) : await actualizar(idOriginal, datos);
     if (resultado.ok) {
       setModal(null);
       mostrarAviso('exito', idOriginal === null ? `Producto "${resultado.producto.nombre}" creado.` : `Producto "${resultado.producto.nombre}" actualizado.`);
@@ -66,8 +76,8 @@ export default function PaginaAdmin() {
   }
 
   // Guarda la categoría nueva desde su modal y devuelve el resultado al formulario.
-  function guardarCategoria(nombre) {
-    const resultado = agregarCategoria(nombre, categorias);
+  async function guardarCategoria(nombre) {
+    const resultado = await agregarCategoria(nombre, categorias);
     if (resultado.ok) {
       setModal(null);
       mostrarAviso('exito', `Categoría "${resultado.categoria}" creada.`);
@@ -75,8 +85,8 @@ export default function PaginaAdmin() {
     return resultado;
   }
 
-  function alternarEstado(producto) {
-    const resultado = cambiarEstado(producto.id);
+  async function alternarEstado(producto) {
+    const resultado = await cambiarEstado(producto);
     if (resultado.ok) {
       mostrarAviso('info', `"${producto.nombre}" ahora está ${producto.activo ? 'inactivo' : 'activo'}.`);
     } else {
@@ -84,15 +94,15 @@ export default function PaginaAdmin() {
     }
   }
 
-  function confirmarBorrado() {
+  async function confirmarBorrado() {
     const producto = modal.producto;
-    const resultado = eliminar(producto.id);
+    const resultado = await eliminar(producto);
     setModal(null);
     mostrarAviso(resultado.ok ? 'exito' : 'error', resultado.ok ? `Producto "${producto.nombre}" eliminado.` : resultado.error);
   }
 
-  function confirmarRestablecer() {
-    const resultado = restablecer();
+  async function confirmarRestablecer() {
+    const resultado = await restablecer();
     setModal(null);
     setFiltros(FILTROS_INICIALES);
     mostrarAviso(resultado.ok ? 'exito' : 'error', resultado.ok ? 'Se restablecieron los 10 productos de prueba y los gráficos de compras volvieron a cero.' : resultado.error);
@@ -105,7 +115,7 @@ export default function PaginaAdmin() {
           <h1 id="titulo-admin" className="titulo-seccion">
             Gestión de Inventario &amp; Catálogo
           </h1>
-          <p className="catalogo__subtitulo">Administración CRUD de productos, sincronizada con LocalStorage.</p>
+          <p className="catalogo__subtitulo">Administración CRUD de productos, sincronizada con Supabase.</p>
         </div>
         <div className="panel__acciones">
           <button type="button" className="boton boton--secundario" onClick={() => setModal({ tipo: 'restablecer' })}>

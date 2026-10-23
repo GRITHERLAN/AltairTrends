@@ -264,6 +264,26 @@ textarea.campo__control {
   accent-color: var(--color-acento);
 }
 
+/* Casilla con texto largo (autorización de datos): la casilla queda arriba y no se encoge. */
+.casilla--legal {
+  align-items: flex-start;
+  line-height: 1.5;
+}
+
+.casilla--legal input {
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+/* Campo trampa anti-bots (honeypot): existe en el HTML pero nadie lo ve. */
+.trampa {
+  position: absolute;
+  left: -100rem;
+  width: 0.1rem;
+  height: 0.1rem;
+  overflow: hidden;
+}
+
 /* ---------- Mensajes en línea ---------- */
 .mensaje {
   padding: var(--espacio-3) var(--espacio-4);

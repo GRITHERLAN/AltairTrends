@@ -68,6 +68,7 @@ export default function CampoCategoria({ id, etiqueta, valor, onCambio, error, c
           type="text"
           className="campo__control combo__entrada"
           value={valor}
+          maxLength={60}
           autoComplete="off"
           role="combobox"
           aria-expanded={abierto}
