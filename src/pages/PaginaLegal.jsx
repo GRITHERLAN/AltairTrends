@@ -30,7 +30,7 @@ export default function PaginaLegal({ documento }) {
       {/* Identificación del Responsable / proveedor: la exigen la Ley 1581 y la Ley 1480 */}
       <section className="legal__seccion tarjeta-panel" aria-labelledby="titulo-responsable">
         <h2 id="titulo-responsable" className="legal__subtitulo">
-          Responsable del tratamiento y proveedor
+          Quién está a cargo de la tienda y de tus datos
         </h2>
         <dl className="legal__datos">
           <div>
@@ -40,13 +40,9 @@ export default function PaginaLegal({ documento }) {
             </dd>
           </div>
           <div>
-            <dt>Identificación</dt>
-            <dd>{RESPONSABLE.documento}</dd>
-          </div>
-          <div>
-            <dt>Domicilio</dt>
+            <dt>Ciudad</dt>
             <dd>
-              {RESPONSABLE.direccion}, {RESPONSABLE.ciudad}
+              {RESPONSABLE.ciudad}
             </dd>
           </div>
           <div>
