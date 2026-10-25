@@ -251,6 +251,13 @@ textarea.campo__control {
   color: var(--color-acento);
 }
 
+/* Mensaje cuando el filtro no encuentra coincidencias (no es seleccionable). */
+.combo__vacio {
+  padding: var(--espacio-2) var(--espacio-3);
+  font-size: 1.3rem;
+  color: var(--color-texto-suave);
+}
+
 .casilla {
   display: flex;
   align-items: center;
