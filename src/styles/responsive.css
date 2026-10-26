@@ -111,10 +111,44 @@
     padding: var(--espacio-2) var(--espacio-3);
   }
 
+  /* Barra superior: botón "Filtros" a la izquierda y buscador ocupando el espacio restante. */
+  .filtros__barra-movil {
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-3);
+  }
+
+  /* Dentro de la barra el botón solo ocupa lo que necesita (en el admin sigue a todo el ancho). */
+  .filtros__barra-movil .filtros__toggle {
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .filtros__buscador-movil {
+    display: block;
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* La etiqueta se oculta visualmente (sigue disponible para lectores de pantalla). */
+  .filtros__buscador-movil .campo__etiqueta {
+    position: absolute;
+    width: 0.1rem;
+    height: 0.1rem;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  /* El buscador de escritorio se oculta en móvil (ya está en la barra superior). */
+  .filtros__campo-nombre-escritorio {
+    display: none;
+  }
+
   .filtros__toggle {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--espacio-2);
     width: 100%;
     padding: var(--espacio-2) 0;
     font: inherit;

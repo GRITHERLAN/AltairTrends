@@ -104,8 +104,10 @@
   gap: var(--espacio-4);
 }
 
-/* El botón de desplegar solo existe en móvil (ver responsive.css). */
-.filtros__toggle {
+/* El botón de desplegar y el buscador de la barra superior solo existen en móvil (ver responsive.css). */
+.filtros__barra-movil,
+.filtros__toggle,
+.filtros__buscador-movil {
   display: none;
 }
 
