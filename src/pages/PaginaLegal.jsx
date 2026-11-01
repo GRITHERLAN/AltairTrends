@@ -34,9 +34,10 @@ export default function PaginaLegal({ documento }) {
         </h2>
         <dl className="legal__datos">
           <div>
-            <dt>Nombre</dt>
+            <dt>Responsable</dt>
             <dd>
-              {RESPONSABLE.nombre} (persona natural), titular de la marca {RESPONSABLE.marca}
+              {/* La marca NO está registrada ante la SIC: no decir "titular de la marca" (ver data/legal.js) */}
+              {RESPONSABLE.nombre} (persona natural), quien vende bajo el nombre comercial {RESPONSABLE.marca}
             </dd>
           </div>
           <div>

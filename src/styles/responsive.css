@@ -177,7 +177,8 @@
     display: flex;
   }
 
-  /* En móvil el botón de WhatsApp queda solo con el icono para no tapar contenido. */
+  /* En móvil el botón de WhatsApp queda con el icono y el aviso legal al lado
+     (sin el texto principal) para no tapar contenido. */
   .whatsapp__texto {
     position: absolute;
     width: 0.1rem;
@@ -187,7 +188,16 @@
   }
 
   .whatsapp {
-    padding: var(--espacio-3);
+    flex-direction: row;
+    align-items: center;
+    gap: var(--espacio-2);
+    padding: var(--espacio-2) var(--espacio-3);
+  }
+
+  .whatsapp__legal {
+    max-width: 14rem;
+    padding-left: 0;
+    font-size: 1rem;
   }
 
   .whatsapp__icono {

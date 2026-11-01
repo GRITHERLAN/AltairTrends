@@ -9,8 +9,26 @@
 import { useEffect, useState } from 'react';
 import { descifrarRuta, enlaceInterno } from '../utils/rutasCifradas';
 
+// Secciones ocultas: no se pueden abrir de ninguna forma (ni escribiendo la ruta,
+// ni pegando un enlace cifrado antiguo). Si alguien lo intenta, va al catálogo.
+const RUTAS_OCULTAS = ['contacto'];
+
 // Lee el hash actual, lo descifra y lo convierte en { nombre, parametro }.
 function leerRuta() {
+  const ruta = interpretarHash();
+
+  // Ruta oculta: se borra el enlace de la barra de direcciones (sin dejar rastro
+  // en el historial) y se muestra el catálogo.
+  if (RUTAS_OCULTAS.includes(ruta.nombre)) {
+    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}#/`);
+    return { nombre: 'inicio', parametro: null };
+  }
+
+  return ruta;
+}
+
+// Descifra el hash y lo separa en { nombre, parametro }.
+function interpretarHash() {
   // Quitamos el "#" y la "/" inicial. Lo que queda es el token cifrado (vacío = inicio).
   const token = window.location.hash.replace(/^#\/?/, '');
   const ruta = descifrarRuta(token);

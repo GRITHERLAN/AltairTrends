@@ -193,31 +193,75 @@
 }
 
 /* ---------- Botón fijo de WhatsApp (esquina inferior izquierda) ---------- */
+/* La píldora verde: contiene el enlace a WhatsApp y, debajo, el aviso legal. */
 .whatsapp {
   position: fixed;
   left: var(--espacio-4);
   bottom: var(--espacio-4);
   z-index: 60;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--espacio-2);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   padding: var(--espacio-2) var(--espacio-4) var(--espacio-2) var(--espacio-3);
   color: #fff;
-  font-size: 1.4rem;
-  font-weight: 700;
   background: #1faa59;
   border-radius: var(--radio-pildora);
   box-shadow: 0 0.6rem 2rem rgba(0, 0, 0, 0.45);
 }
 
 .whatsapp:hover {
-  color: #fff;
   background: #25c566;
+}
+
+/* Enlace principal: icono + "¿Quieres más información?" */
+.whatsapp__enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.whatsapp__enlace:hover {
+  color: #fff;
   text-decoration: none;
+}
+
+/* Truco: este bloque invisible estira el enlace a toda la píldora,
+   así cualquier punto del botón verde abre WhatsApp. */
+.whatsapp__enlace::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
 }
 
 .whatsapp__icono {
   width: 2.8rem;
   height: 2.8rem;
   flex-shrink: 0;
+}
+
+/* Aviso legal: más pequeño y alineado con el texto principal (ancho del icono + espacio). */
+.whatsapp__legal {
+  margin: 0;
+  padding-left: calc(2.8rem + var(--espacio-2));
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* El enlace a la política queda por encima del ::after para poder pulsarlo aparte. */
+.whatsapp__legal a {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.whatsapp__legal a:hover {
+  color: #fff;
 }

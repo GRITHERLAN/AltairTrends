@@ -5,7 +5,7 @@
 // ============================================================
 
 import { useConfig } from '../../context/ConfigContext';
-import { DOCUMENTOS_LEGALES } from '../../data/legal';
+import { DOCUMENTOS_LEGALES, RESPONSABLE } from '../../data/legal';
 import { enlaceInterno } from '../../utils/rutasCifradas';
 import Marca from '../ui/Marca';
 
@@ -40,8 +40,9 @@ export default function Pie() {
         </nav>
 
         <p className="pie__legal">
-          © {new Date().getFullYear()} AltairTrends Luxury Digital. Todos los derechos reservados. Precios expresados en
-          Pesos Colombianos (COP).
+          {/* Los derechos son de la persona responsable: AltairTrends es solo su nombre comercial (sin registrar). */}
+          © {new Date().getFullYear()} {RESPONSABLE.nombre} · {RESPONSABLE.marca}. Todos los derechos reservados. Precios
+          expresados en Pesos Colombianos (COP).
         </p>
       </div>
     </footer>

@@ -64,7 +64,7 @@ export default function EditorContacto() {
           <h2 id="titulo-config" className="titulo-seccion titulo-seccion--pequeno">
             Información de contacto e indicadores
           </h2>
-          <p className="catalogo__subtitulo">Estos datos se muestran en "Sobre nosotros", "Contacto" y el pie de página.</p>
+          <p className="catalogo__subtitulo">Estos datos se muestran en "Sobre nosotros" y el pie de página.</p>
         </div>
         <span className="insignia insignia--dorada">Solo administrador</span>
       </header>

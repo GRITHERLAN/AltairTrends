@@ -12,10 +12,10 @@ import { irA } from '../../hooks/useRuta';
 import { enlaceInterno } from '../../utils/rutasCifradas';
 
 // Enlaces públicos de la navegación.
+// "Contacto" no aparece: esa sección está oculta (ver RUTAS_OCULTAS en hooks/useRuta.jsx).
 const ENLACES = [
   { ruta: '/', nombre: 'inicio', texto: 'Catálogo' },
   { ruta: '/sobre-nosotros', nombre: 'sobre-nosotros', texto: 'Sobre nosotros' },
-  { ruta: '/contacto', nombre: 'contacto', texto: 'Contacto' },
 ];
 
 export default function Cabecera({ rutaActual }) {

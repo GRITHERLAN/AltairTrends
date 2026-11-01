@@ -17,7 +17,6 @@ import { ProductosProvider, useProductos } from './context/ProductosContext';
 import { useRuta } from './hooks/useRuta';
 import PaginaAdmin from './pages/PaginaAdmin';
 import PaginaCatalogo from './pages/PaginaCatalogo';
-import PaginaContacto from './pages/PaginaContacto';
 import PaginaLegal from './pages/PaginaLegal';
 import PaginaLogin from './pages/PaginaLogin';
 import PaginaProducto from './pages/PaginaProducto';
@@ -30,8 +29,9 @@ function Paginas({ ruta }) {
       return <PaginaProducto id={ruta.parametro} />;
     case 'sobre-nosotros':
       return <PaginaSobreNosotros />;
-    case 'contacto':
-      return <PaginaContacto />;
+    // La sección Contacto está OCULTA: no tiene "case" aquí y PaginaContacto
+    // no se importa, así que su código ni siquiera entra en la web publicada.
+    // Cualquier ruta desconocida (incluida "/contacto") cae en el catálogo.
     case 'login':
       return <PaginaLogin />;
     case 'admin':
