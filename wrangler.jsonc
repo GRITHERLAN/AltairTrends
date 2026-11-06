@@ -1,0 +1,11 @@
+// Configuración de Cloudflare Workers: el sitio es estático (lo que genera
+// "npm run build" en dist/). No hay código de servidor.
+// Las cabeceras de seguridad están en public/_headers.
+{
+  // Debe coincidir EXACTAMENTE con el nombre del Worker en el panel de Cloudflare.
+  "name": "altairtrends",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}
