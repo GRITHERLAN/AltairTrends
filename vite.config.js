@@ -1,11 +1,11 @@
 // Configuración de Vite: plugin de React y cabeceras de seguridad.
 //
-// Las cabeceras de PRODUCCIÓN están en vercel.json (Vercel las envía con cada
-// respuesta). Aquí se repiten para poder probarlas en local:
+// Las cabeceras de PRODUCCIÓN están en public/_headers (Cloudflare las envía con
+// cada respuesta). Aquí se repiten para poder probarlas en local:
 //   - "npm run preview" (build final): todas, incluida la CSP.
 //   - "npm run dev": todas menos la CSP y HSTS, porque el modo desarrollo de
 //     Vite inyecta scripts en línea y usa http://localhost.
-// Si cambias una cabecera, cámbiala también en vercel.json.
+// Si cambias una cabecera, cámbiala también en public/_headers.
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 

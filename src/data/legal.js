@@ -30,8 +30,8 @@
 // ============================================================
 
 // Versión de la Política de privacidad (máx. 20 caracteres) y fecha desde la que rige.
-export const VERSION_POLITICA = '2026-10-31-1';
-export const FECHA_VIGENCIA = '31 de octubre de 2026';
+export const VERSION_POLITICA = '2026-11-06-1';
+export const FECHA_VIGENCIA = '6 de noviembre de 2026';
 
 // Responsable del tratamiento y proveedor de la tienda (persona natural).
 // "marca" es el NOMBRE COMERCIAL que usa; no es una marca registrada.
@@ -124,7 +124,7 @@ const PRIVACIDAD = {
       ],
       lista: [
         'Supabase: guarda la información de la tienda, las cuentas de acceso y las imágenes de los productos.',
-        'Vercel: mantiene la página publicada en internet.',
+        'Cloudflare: mantiene la página publicada en internet.',
         'WhatsApp (de la empresa Meta): por ahí recibimos y respondemos tus mensajes. Cuando lo usas, WhatsApp también aplica su propia política de privacidad.',
       ],
     },
