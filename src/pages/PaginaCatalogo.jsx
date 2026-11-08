@@ -165,9 +165,10 @@ export default function PaginaCatalogo({ categoria = null }) {
 
         {visibles.length > 0 ? (
           <ul className="catalogo__rejilla">
-            {visibles.map((producto) => (
+            {visibles.map((producto, posicion) => (
               <li key={producto.id}>
-                <TarjetaProducto producto={producto} />
+                {/* Las 2 primeras se ven sin scroll en móvil y escritorio: imagen sin carga diferida */}
+                <TarjetaProducto producto={producto} prioridad={posicion < 2} />
               </li>
             ))}
           </ul>

@@ -74,7 +74,7 @@
 }
 
 .catalogo__total strong {
-  color: var(--color-acento);
+  color: var(--color-acento-hover); /* contraste suficiente sobre el fondo crema */
 }
 
 .catalogo__resultados {

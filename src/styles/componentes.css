@@ -116,7 +116,8 @@
 }
 
 .insignia--exito {
-  color: var(--color-acento);
+  /* Tono oscuro del acento: contraste 6:1 (el normal no llegaba al 4.5:1 de WCAG AA). */
+  color: var(--color-acento-hover);
   background: var(--color-acento-fondo);
   border-color: var(--color-acento-borde);
 }

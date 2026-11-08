@@ -1,0 +1,30 @@
+{
+  "entries": [
+    {
+      "identifier": "urn:air:altairtrends.com:tienda:catalogo",
+      "displayName": "AltairTrends — guía de la tienda para IA",
+      "type": "text/markdown",
+      "url": "https://altairtrends.com/llms.txt",
+      "description": "Resumen de la tienda online AltairTrends (Colombia): categorías de productos, cómo comprar por WhatsApp, envíos a toda Colombia, devoluciones, garantía y contacto.",
+      "representativeQueries": [
+        "tienda online de juguetes educativos con envío a toda Colombia",
+        "dónde comprar organizadores y artículos para el hogar en Colombia",
+        "cómo comprar en AltairTrends y cuál es su política de devoluciones"
+      ],
+      "tags": ["ecommerce", "Colombia", "hogar", "juguetes", "belleza", "tecnología"],
+      "updatedAt": "2026-11-08T00:00:00Z"
+    },
+    {
+      "identifier": "urn:air:altairtrends.com:tienda:mapa-del-sitio",
+      "displayName": "AltairTrends — mapa del sitio (productos y categorías)",
+      "type": "application/xml",
+      "url": "https://altairtrends.com/sitemap.xml",
+      "description": "Lista completa de URLs de productos activos y categorías del catálogo, con fecha de última modificación.",
+      "representativeQueries": [
+        "lista de productos de AltairTrends",
+        "categorías del catálogo de AltairTrends"
+      ],
+      "tags": ["sitemap", "catálogo"]
+    }
+  ]
+}

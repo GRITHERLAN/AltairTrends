@@ -23,5 +23,14 @@ export default function MediaProducto({ medio, nombre, controles = false, priori
     return <video className="media__archivo" src={medio.url} controls={controles} muted preload="metadata" />;
   }
 
-  return <img className="media__archivo" src={medio.url} alt={nombre} loading={prioridad ? 'eager' : 'lazy'} />;
+  // fetchpriority va en minúsculas: React 18 no conoce "fetchPriority" y lo pasa tal cual al HTML.
+  return (
+    <img
+      className="media__archivo"
+      src={medio.url}
+      alt={nombre}
+      loading={prioridad ? 'eager' : 'lazy'}
+      fetchpriority={prioridad ? 'high' : undefined}
+    />
+  );
 }

@@ -11,11 +11,20 @@
     <link rel="canonical" href="https://altairtrends.com/" />
     <meta name="theme-color" content="#0c0b09" />
 
+    <!-- Conexión anticipada con Supabase (datos del catálogo e imágenes de productos):
+         adelanta la imagen principal (LCP). Dos líneas: una para fetch (CORS) y otra para <img>. -->
+    <link rel="preconnect" href="https://biodxaadesaiecuuukxj.supabase.co" crossorigin />
+    <link rel="preconnect" href="https://biodxaadesaiecuuukxj.supabase.co" />
+
     <!-- Iconos (generados a partir del logo) -->
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/png" href="/icono-192.png" sizes="192x192" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Catálogo de recursos para agentes de IA (especificación ARD, agenticresourcediscovery.org).
+         public/.well-known/ard.json y ai-catalog.json (nombre antiguo) tienen el mismo contenido. -->
+    <link rel="ard" href="/.well-known/ard.json" type="application/json" />
 
     <!-- Vista previa al compartir en WhatsApp, Facebook, Instagram, X... -->
     <meta property="og:type" content="website" />

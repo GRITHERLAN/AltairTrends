@@ -25,7 +25,9 @@ const MAXIMO_ELEMENTOS = 20;
 // Extensiones que se reconocen como video cuando se pega una URL.
 const EXTENSIONES_VIDEO = ['.mp4', '.webm', '.ogg', '.mov'];
 
-// Lee un archivo de imagen, lo reduce con un canvas y devuelve un archivo JPEG (Blob).
+// Lee un archivo de imagen, lo reduce con un canvas y devuelve un archivo WebP (Blob):
+// pesa ~30 % menos que JPEG con la misma calidad (lo pide PageSpeed Insights).
+// Si el navegador no sabe generar WebP (Safari antiguo), se usa JPEG.
 // Los GIF se dejan tal cual para no perder la animación.
 function comprimirImagen(archivo) {
   if (archivo.type === 'image/gif') return Promise.resolve(archivo);
@@ -42,7 +44,16 @@ function comprimirImagen(archivo) {
       lienzo.height = Math.round(imagen.height * factor);
       lienzo.getContext('2d').drawImage(imagen, 0, 0, lienzo.width, lienzo.height);
       URL.revokeObjectURL(urlTemporal);
-      lienzo.toBlob((blob) => (blob ? resolver(blob) : rechazar(new Error('No se pudo comprimir la imagen.'))), 'image/jpeg', 0.82);
+      const error = new Error('No se pudo comprimir la imagen.');
+      lienzo.toBlob(
+        (blob) => {
+          if (blob && blob.type === 'image/webp') return resolver(blob);
+          // Sin soporte de WebP el navegador devuelve PNG (más pesado): se repite en JPEG.
+          lienzo.toBlob((jpeg) => (jpeg ? resolver(jpeg) : rechazar(error)), 'image/jpeg', 0.82);
+        },
+        'image/webp',
+        0.8
+      );
     };
     imagen.onerror = () => {
       URL.revokeObjectURL(urlTemporal);

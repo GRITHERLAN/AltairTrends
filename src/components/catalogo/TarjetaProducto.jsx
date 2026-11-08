@@ -12,7 +12,8 @@ import MediaProducto from './MediaProducto';
 // Por debajo de este stock se muestra la etiqueta en ámbar ("pocas unidades").
 const STOCK_BAJO = 8;
 
-export default function TarjetaProducto({ producto }) {
+// "prioridad": las primeras tarjetas se ven sin hacer scroll; su imagen se carga de inmediato (LCP).
+export default function TarjetaProducto({ producto, prioridad = false }) {
   const manejarCompra = useComprar();
   const agotado = producto.stock <= 0;
   const claseStock = agotado ? 'insignia--critica' : producto.stock < STOCK_BAJO ? 'insignia--alerta' : 'insignia--exito';
@@ -20,7 +21,7 @@ export default function TarjetaProducto({ producto }) {
   return (
     <article className="tarjeta">
       <div className="tarjeta__media">
-        <MediaProducto medio={producto.multimedia[0]} nombre={producto.nombre} />
+        <MediaProducto medio={producto.multimedia[0]} nombre={producto.nombre} prioridad={prioridad} />
         <div className="tarjeta__etiquetas">
           <span className="insignia insignia--id">{producto.id}</span>
           <span className="insignia insignia--categoria">{producto.categoria}</span>
@@ -41,7 +42,8 @@ export default function TarjetaProducto({ producto }) {
         <div className="tarjeta__acciones">
           {/* Este enlace estira su área clicable a toda la tarjeta (ver .tarjeta__enlace en CSS) */}
           <a className="boton boton--secundario tarjeta__enlace" href={rutaProducto(producto)}>
-            Ver producto
+            {/* El nombre oculto distingue cada enlace "Ver producto" (accesibilidad y buscadores) */}
+            Ver producto<span className="sr-solo">: {producto.nombre}</span>
           </a>
           <button
             type="button"
