@@ -6,6 +6,10 @@
   "name": "altairtrends",
   "compatibility_date": "2026-11-01",
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    // Las páginas públicas tienen URL real (/sobre-nosotros, /producto/...).
+    // Para cualquier ruta que no sea un archivo se sirve index.html y React
+    // decide qué página mostrar (ver src/hooks/useRuta.jsx).
+    "not_found_handling": "single-page-application"
   }
 }

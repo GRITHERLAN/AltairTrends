@@ -43,6 +43,21 @@
   gap: var(--espacio-3);
 }
 
+/* Título del catálogo + insignia "Solo productos disponibles" en la misma línea */
+.catalogo__titulo-fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-3);
+}
+
+/* Fecha de actualización del catálogo (frescura del dato) */
+.catalogo__actualizado {
+  margin-top: var(--espacio-1);
+  font-size: 1.2rem;
+  color: var(--color-texto-suave);
+}
+
 .catalogo__subtitulo {
   margin-top: var(--espacio-1);
   font-size: 1.4rem;
@@ -206,6 +221,42 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--espacio-3);
+}
+
+/* Tabla "Datos del producto": etiqueta a la izquierda, valor a la derecha */
+.producto__ficha {
+  display: grid;
+  border-top: 0.1rem solid var(--color-borde);
+}
+
+.producto__ficha > div {
+  display: grid;
+  grid-template-columns: minmax(10rem, 14rem) 1fr;
+  gap: var(--espacio-3);
+  padding: var(--espacio-2) 0;
+  font-size: 1.4rem;
+  border-bottom: 0.1rem solid var(--color-borde);
+}
+
+.producto__ficha dt {
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+.producto__ficha dd {
+  color: var(--color-texto-suave);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Preguntas frecuentes (Sobre nosotros) ---------- */
+.preguntas {
+  display: grid;
+  gap: var(--espacio-4);
+}
+
+.preguntas__pregunta {
+  margin-bottom: var(--espacio-1);
+  font-size: 1.7rem;
 }
 
 /* ---------- Sobre nosotros ---------- */

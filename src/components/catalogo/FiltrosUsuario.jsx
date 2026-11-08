@@ -5,10 +5,13 @@
 // ============================================================
 
 import { useState } from 'react';
+import { rutaCategoria } from '../../utils/categorias';
 import { OPCIONES_ORDEN } from '../../utils/filtrarProductos';
 import Campo from '../ui/Campo';
 
-export default function FiltrosUsuario({ filtros, onCambiar, categorias, onLimpiar }) {
+// categorias: [{ slug, nombre }] (ver utils/categorias.js). categoriaActual: slug o null ("Todas").
+// Los chips son ENLACES a /categoria/<slug> (no botones): así Google descubre cada categoría.
+export default function FiltrosUsuario({ filtros, onCambiar, categorias, categoriaActual, onLimpiar }) {
   // En móvil los filtros son un menú desplegable: este estado indica si está abierto.
   // En escritorio el CSS ignora este estado y siempre muestra los filtros.
   const [abierto, setAbierto] = useState(false);
@@ -63,26 +66,25 @@ export default function FiltrosUsuario({ filtros, onCambiar, categorias, onLimpi
         />
       </div>
 
-      <div className="filtros__categorias" role="group" aria-label="Categorías">
+      <nav className="filtros__categorias" aria-label="Categorías">
         <span className="filtros__categorias-titulo">Categorías:</span>
-        {['todas', ...categorias].map((categoria) => (
-          <button
-            key={categoria}
-            type="button"
-            className={`chip ${filtros.categoria === categoria ? 'chip--activo' : ''}`}
-            aria-pressed={filtros.categoria === categoria}
-            onClick={(evento) => {
-              evento.preventDefault();
-              cambiar('categoria', categoria);
-            }}
-          >
-            {categoria === 'todas' ? 'Todas' : categoria}
-          </button>
-        ))}
+        {[{ slug: null, nombre: 'Todas' }, ...categorias].map(({ slug, nombre }) => {
+          const activa = slug === categoriaActual;
+          return (
+            <a
+              key={slug ?? 'todas'}
+              href={slug ? rutaCategoria(slug) : '/'}
+              className={`chip ${activa ? 'chip--activo' : ''}`}
+              aria-current={activa ? 'page' : undefined}
+            >
+              {nombre}
+            </a>
+          );
+        })}
         <button type="button" className="boton boton--enlace" onClick={onLimpiar}>
           Limpiar filtros
         </button>
-      </div>
+      </nav>
       </div>
     </form>
   );

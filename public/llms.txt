@@ -1,0 +1,36 @@
+# AltairTrends
+
+> Tienda online colombiana en formato catálogo digital. Vende productos únicos y funcionales: artículos para el hogar, juguetes y juegos educativos, belleza y cuidado personal, tecnología, bienestar, mascotas y accesorios para vehículos. Precios en pesos colombianos (COP), en su mayoría entre $25.000 y $285.000, con envío a toda Colombia. Lema: "Donde las tendencias alzan vuelo".
+
+## Datos clave
+
+- Sitio: https://altairtrends.com
+- Ubicación: Dosquebradas, Risaralda, Colombia. Venta 100 % online con envío a todo el país.
+- Cómo comprar: cada producto tiene un botón "Comprar" que abre WhatsApp (https://wa.link/vtp65t) para confirmar unidades, precio final y costo del envío antes de pagar.
+- Contacto: altairtrends@gmail.com · +57 301 778 6066 (WhatsApp).
+- Devoluciones: derecho de retracto de 5 días hábiles después de recibir el producto, sin usar y en buen estado; el envío de la devolución lo paga el cliente; reembolso en máximo 30 días calendario.
+- Garantía: garantía legal en todos los productos (reparación, cambio o devolución del dinero).
+- Quejas y reclamos: respuesta en máximo 15 días hábiles; ante la SIC si no hay conformidad.
+- "AltairTrends" es un nombre comercial; la responsable de la tienda es una persona natural (ver la Política de datos).
+
+## Catálogo
+
+- [Todos los productos](https://altairtrends.com/): búsqueda por nombre (también con https://altairtrends.com/?q=texto), filtro por categoría y orden por precio o novedad.
+- [Artículos para el hogar](https://altairtrends.com/categoria/hogar)
+- [Juguetes y juegos educativos](https://altairtrends.com/categoria/jugueteria)
+- [Belleza y cuidado personal](https://altairtrends.com/categoria/belleza)
+- [Tecnología y gadgets](https://altairtrends.com/categoria/tecnologia)
+- [Bienestar y descanso](https://altairtrends.com/categoria/bienestar)
+- [Productos para mascotas](https://altairtrends.com/categoria/mascotas)
+- [Accesorios para carro y moto](https://altairtrends.com/categoria/vehiculo)
+- [Mapa del sitio](https://altairtrends.com/sitemap.xml): lista completa de productos con su URL.
+
+## La tienda
+
+- [Sobre nosotros y preguntas frecuentes](https://altairtrends.com/sobre-nosotros)
+
+## Información legal
+
+- [Política de Tratamiento de Datos Personales](https://altairtrends.com/privacidad): Ley 1581 de 2012.
+- [Términos y Condiciones](https://altairtrends.com/terminos): Estatuto del Consumidor, Ley 1480 de 2011 (precios, derecho de retracto, garantía, quejas y reclamos).
+- [Política de Cookies](https://altairtrends.com/cookies)

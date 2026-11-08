@@ -13,6 +13,7 @@ import { useState } from 'react';
 import Campo from '../components/ui/Campo';
 import { useAuth } from '../context/AuthContext';
 import { useAvisos } from '../context/AvisosContext';
+import { useMetaPagina } from '../hooks/useMetaPagina';
 import { irA } from '../hooks/useRuta';
 
 // Intentos fallidos permitidos antes de bloquear y duración del bloqueo.
@@ -20,6 +21,8 @@ const MAXIMO_INTENTOS = 5;
 const SEGUNDOS_BLOQUEO = 60;
 
 export default function PaginaLogin() {
+  // Página privada: fuera de Google.
+  useMetaPagina({ titulo: 'Iniciar sesión', noindex: true });
   const { entrar } = useAuth();
   const { mostrarAviso } = useAvisos();
   const [datos, setDatos] = useState({ correo: '', contrasena: '' });

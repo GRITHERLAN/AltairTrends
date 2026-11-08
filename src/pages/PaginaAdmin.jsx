@@ -19,11 +19,14 @@ import ModalConfirmacion from '../components/ui/ModalConfirmacion';
 import { useAuth } from '../context/AuthContext';
 import { useAvisos } from '../context/AvisosContext';
 import { useProductos } from '../context/ProductosContext';
+import { useMetaPagina } from '../hooks/useMetaPagina';
 import { requiereModificacion } from '../utils/formatos';
 import { enlaceInterno } from '../utils/rutasCifradas';
 import { FILTROS_INICIALES, filtrarProductos, obtenerCategorias } from '../utils/filtrarProductos';
 
 export default function PaginaAdmin() {
+  // Página privada: fuera de Google.
+  useMetaPagina({ titulo: 'Panel de administración', noindex: true });
   const { esAdmin } = useAuth();
   const { productos, ventas, ventasProducto, categoriasExtra, cargadoComoAdmin, agregarCategoria, crear, actualizar, eliminar, cambiarEstado, restablecer } =
     useProductos();

@@ -424,6 +424,8 @@ textarea.campo__control {
 
 /* ---------- Chips (categorías / estado) ---------- */
 .chip {
+  display: inline-block; /* los chips de categoría son enlaces <a> */
+  text-decoration: none;
   padding: var(--espacio-1) var(--espacio-3);
   font-size: 1.3rem;
   color: var(--color-texto-suave);

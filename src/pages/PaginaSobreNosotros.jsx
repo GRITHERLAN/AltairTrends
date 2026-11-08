@@ -1,13 +1,45 @@
 // ============================================================
 // PaginaSobreNosotros.jsx
-// Descripción de la marca e indicadores. Ambos se editan desde el
-// panel de administración (vienen del ConfigContext).
+// Descripción de la marca e indicadores (ambos se editan desde el panel
+// de administración, vienen del ConfigContext) y preguntas frecuentes
+// (data/preguntasFrecuentes.js).
 // ============================================================
 
 import { useConfig } from '../context/ConfigContext';
+import { PREGUNTAS_FRECUENTES } from '../data/preguntasFrecuentes';
+import { urlAbsoluta, useMetaPagina } from '../hooks/useMetaPagina';
+
+const DESCRIPCION =
+  'Conoce AltairTrends, tienda online de Dosquebradas, Risaralda, con productos únicos y funcionales para el hogar y la familia, y envíos a toda Colombia.';
 
 export default function PaginaSobreNosotros() {
   const { config } = useConfig();
+
+  useMetaPagina({
+    titulo: 'Sobre nosotros',
+    descripcion: DESCRIPCION,
+    ruta: '/sobre-nosotros',
+    schema: {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'AboutPage',
+          name: 'Sobre AltairTrends',
+          description: DESCRIPCION,
+          url: urlAbsoluta('/sobre-nosotros'),
+          about: { '@id': `${urlAbsoluta('/')}#tienda` },
+        },
+        {
+          '@type': 'FAQPage',
+          mainEntity: PREGUNTAS_FRECUENTES.map(({ pregunta, respuesta }) => ({
+            '@type': 'Question',
+            name: pregunta,
+            acceptedAnswer: { '@type': 'Answer', text: respuesta },
+          })),
+        },
+      ],
+    },
+  });
 
   return (
     <>
@@ -18,7 +50,7 @@ export default function PaginaSobreNosotros() {
         <p className="heroe__texto">
           Donde las tendencias alzan vuelo.
           Tienda online colombiana inspirada en la visión del águila: clara, audaz y siempre a la vanguardia.
-          Productos únicos y funcionales para quienes quieren destacar.
+          Productos únicos y funcionales para quienes quieren destacar, desde Dosquebradas (Risaralda) para toda Colombia.
         </p>
       </section>
 
@@ -53,6 +85,25 @@ export default function PaginaSobreNosotros() {
           </ul>
         </section>
       )}
+
+      {/* Preguntas frecuentes: respuesta directa en la primera frase de cada una. */}
+      <section className="contenedor bloque" aria-labelledby="titulo-preguntas">
+        <h2 id="titulo-preguntas" className="titulo-seccion">
+          Preguntas frecuentes
+        </h2>
+        <div className="preguntas">
+          {PREGUNTAS_FRECUENTES.map(({ pregunta, respuesta }) => (
+            <div key={pregunta} className="preguntas__item">
+              <h3 className="preguntas__pregunta">{pregunta}</h3>
+              <p className="bloque__texto">{respuesta}</p>
+            </div>
+          ))}
+        </div>
+        <p className="bloque__texto">
+          Los detalles completos están en los <a href="/terminos">Términos y Condiciones</a> y en la{' '}
+          <a href="/privacidad">Política de datos</a>.
+        </p>
+      </section>
       {/* El botón "Contáctanos" se quitó: la sección Contacto está oculta. */}
     </>
   );

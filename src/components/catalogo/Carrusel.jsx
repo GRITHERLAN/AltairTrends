@@ -29,7 +29,7 @@ export default function Carrusel({ multimedia, nombre }) {
     <section className="carrusel" aria-label={`Galería de ${nombre}`} tabIndex={0} onKeyDown={alPulsarTecla}>
       <div className="carrusel__principal">
         {/* "key" fuerza a recrear el video/imagen al cambiar de elemento */}
-        <MediaProducto key={indice} medio={multimedia[indice]} nombre={nombre} controles />
+        <MediaProducto key={indice} medio={multimedia[indice]} nombre={nombre} controles prioridad={indice === 0} />
 
         {total > 1 && (
           <>

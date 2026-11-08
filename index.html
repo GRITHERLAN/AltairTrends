@@ -1,15 +1,103 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-CO">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="AltairTrends: catálogo digital de lujo contemporáneo con despacho nacional en Colombia." />
-    <link rel="icon" type="image/png" href="/src/assets/logo.png" />
-    <title>AltairTrends | Catálogo Digital</title>
+
+    <!-- SEO por defecto. Cada página los cambia al cargar (src/hooks/useMetaPagina.js).
+         Si cambias el título o la descripción, cámbialos también en src/data/seo.js -->
+    <title>AltairTrends | Hogar, juguetes y tendencias en Colombia</title>
+    <meta name="description" content="Tienda online colombiana con productos para el hogar, juguetes, belleza, tecnología y mascotas. Precios en COP, envío a toda Colombia y atención por WhatsApp." />
+    <link rel="canonical" href="https://altairtrends.com/" />
+    <meta name="theme-color" content="#0c0b09" />
+
+    <!-- Iconos (generados a partir del logo) -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" href="/icono-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Vista previa al compartir en WhatsApp, Facebook, Instagram, X... -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AltairTrends" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:title" content="AltairTrends | Hogar, juguetes y tendencias en Colombia" />
+    <meta property="og:description" content="Tienda online colombiana con productos para el hogar, juguetes, belleza, tecnología y mascotas. Precios en COP, envío a toda Colombia y atención por WhatsApp." />
+    <meta property="og:url" content="https://altairtrends.com/" />
+    <meta property="og:image" content="https://altairtrends.com/og-imagen.jpg" />
+    <meta property="og:image:alt" content="Logo dorado de AltairTrends: un águila sobre fondo negro" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AltairTrends | Hogar, juguetes y tendencias en Colombia" />
+    <meta name="twitter:description" content="Tienda online colombiana con productos para el hogar, juguetes, belleza, tecnología y mascotas. Precios en COP, envío a toda Colombia y atención por WhatsApp." />
+    <meta name="twitter:image" content="https://altairtrends.com/og-imagen.jpg" />
+
+    <!-- Datos estructurados de la tienda (schema.org). Es un bloque de datos, no código:
+         la CSP (script-src 'self') no lo bloquea. Cuando haya redes sociales, añádelas en "sameAs". -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "OnlineStore",
+            "@id": "https://altairtrends.com/#tienda",
+            "name": "AltairTrends",
+            "url": "https://altairtrends.com/",
+            "logo": "https://altairtrends.com/icono-512.png",
+            "image": "https://altairtrends.com/og-imagen.jpg",
+            "description": "Tienda online colombiana con productos para el hogar, juguetes, belleza, tecnología y mascotas. Precios en pesos colombianos y envío a toda Colombia.",
+            "slogan": "Donde las tendencias alzan vuelo",
+            "areaServed": { "@type": "Country", "name": "Colombia" },
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Dosquebradas",
+              "addressRegion": "Risaralda",
+              "addressCountry": "CO"
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "customer service",
+              "url": "https://wa.link/vtp65t",
+              "email": "altairtrends@gmail.com",
+              "telephone": "+57 301 778 6066",
+              "availableLanguage": "es"
+            },
+            "hasMerchantReturnPolicy": {
+              "@type": "MerchantReturnPolicy",
+              "applicableCountry": "CO",
+              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+              "merchantReturnDays": 5,
+              "returnMethod": "https://schema.org/ReturnByMail",
+              "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility",
+              "merchantReturnLink": "https://altairtrends.com/terminos"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://altairtrends.com/#web",
+            "name": "AltairTrends",
+            "url": "https://altairtrends.com/",
+            "inLanguage": "es-CO",
+            "publisher": { "@id": "https://altairtrends.com/#tienda" },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://altairtrends.com/?q={search_term_string}"
+              },
+              "query-input": "required name=search_term_string"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <!-- React monta toda la aplicación dentro de este contenedor -->
     <div id="root"></div>
+    <noscript>
+      AltairTrends: tienda online colombiana de productos para el hogar, juguetes, belleza y tecnología. Activa JavaScript para ver el
+      catálogo.
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

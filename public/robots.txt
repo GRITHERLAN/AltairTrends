@@ -1,0 +1,8 @@
+# AltairTrends — https://altairtrends.com
+# Todas las páginas públicas se pueden rastrear. El login y el panel de
+# administración no tienen URL propia (van cifrados en el hash) y además
+# llevan "noindex", así que no hace falta bloquearlos aquí.
+User-agent: *
+Allow: /
+
+Sitemap: https://altairtrends.com/sitemap.xml

@@ -8,11 +8,13 @@
 
 import { useConfig } from '../context/ConfigContext';
 import { DOCUMENTOS_LEGALES, FECHA_VIGENCIA, RESPONSABLE, VERSION_POLITICA } from '../data/legal';
-import { enlaceInterno } from '../utils/rutasCifradas';
+import { recortar, useMetaPagina } from '../hooks/useMetaPagina';
 
 export default function PaginaLegal({ documento }) {
   const { config } = useConfig();
   const contenido = DOCUMENTOS_LEGALES[documento];
+
+  useMetaPagina({ titulo: contenido.titulo, descripcion: recortar(contenido.resumen), ruta: contenido.ruta });
 
   return (
     <article className="contenedor legal" aria-labelledby="titulo-legal">
@@ -84,7 +86,7 @@ export default function PaginaLegal({ documento }) {
         {Object.entries(DOCUMENTOS_LEGALES)
           .filter(([nombre]) => nombre !== documento)
           .map(([nombre, otro]) => (
-            <a key={nombre} className="boton boton--secundario" href={enlaceInterno(otro.ruta)}>
+            <a key={nombre} className="boton boton--secundario" href={otro.ruta}>
               {otro.titulo}
             </a>
           ))}

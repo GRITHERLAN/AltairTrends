@@ -19,19 +19,25 @@ import PaginaAdmin from './pages/PaginaAdmin';
 import PaginaCatalogo from './pages/PaginaCatalogo';
 import PaginaLegal from './pages/PaginaLegal';
 import PaginaLogin from './pages/PaginaLogin';
+import PaginaNoEncontrada from './pages/PaginaNoEncontrada';
 import PaginaProducto from './pages/PaginaProducto';
 import PaginaSobreNosotros from './pages/PaginaSobreNosotros';
 
-// Elige la página según el nombre de la ruta.
+// Elige la página según el nombre de la ruta (ver hooks/useRuta.jsx).
 function Paginas({ ruta }) {
   switch (ruta.nombre) {
     case 'producto':
       return <PaginaProducto id={ruta.parametro} />;
+    // Mismo componente que la portada: al pasar entre "Todas" y una categoría
+    // se conserva lo escrito en el buscador.
+    case 'categoria':
+      return <PaginaCatalogo categoria={ruta.parametro} />;
     case 'sobre-nosotros':
       return <PaginaSobreNosotros />;
     // La sección Contacto está OCULTA: no tiene "case" aquí y PaginaContacto
     // no se importa, así que su código ni siquiera entra en la web publicada.
-    // Cualquier ruta desconocida (incluida "/contacto") cae en el catálogo.
+    // "/contacto" redirige al catálogo (useRuta).
+    // Login y Admin solo llegan aquí desde un enlace cifrado.
     case 'login':
       return <PaginaLogin />;
     case 'admin':
@@ -41,6 +47,8 @@ function Paginas({ ruta }) {
     case 'terminos':
     case 'cookies':
       return <PaginaLegal documento={ruta.nombre} />;
+    case 'no-encontrada':
+      return <PaginaNoEncontrada />;
     default:
       return <PaginaCatalogo />;
   }

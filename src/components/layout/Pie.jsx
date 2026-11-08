@@ -17,7 +17,7 @@ export default function Pie() {
       <div className="pie__contenido contenedor">
         <div className="pie__marca">
           <Marca />
-          <p className="pie__texto">Tienda contemporánea de lujo accesible en Colombia.</p>
+          <p className="pie__texto">Tienda online de productos para el hogar, juguetes y más. Desde Dosquebradas para toda Colombia.</p>
         </div>
 
         <address className="pie__contacto">

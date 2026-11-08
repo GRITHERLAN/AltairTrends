@@ -6,7 +6,7 @@
 
 import { useComprar } from '../../hooks/useComprar';
 import { formatoCop } from '../../utils/formatos';
-import { enlaceInterno } from '../../utils/rutasCifradas';
+import { rutaProducto } from '../../utils/slug';
 import MediaProducto from './MediaProducto';
 
 // Por debajo de este stock se muestra la etiqueta en ámbar ("pocas unidades").
@@ -40,7 +40,7 @@ export default function TarjetaProducto({ producto }) {
 
         <div className="tarjeta__acciones">
           {/* Este enlace estira su área clicable a toda la tarjeta (ver .tarjeta__enlace en CSS) */}
-          <a className="boton boton--secundario tarjeta__enlace" href={enlaceInterno(`/producto/${encodeURIComponent(producto.id)}`)}>
+          <a className="boton boton--secundario tarjeta__enlace" href={rutaProducto(producto)}>
             Ver producto
           </a>
           <button

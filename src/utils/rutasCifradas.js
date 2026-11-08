@@ -1,7 +1,11 @@
 // ============================================================
 // rutasCifradas.js
-// Ofuscación de las rutas internas (por ejemplo "/producto/ALT-102")
-// para que la URL no muestre el destino a simple vista.
+// Enlaces internos de la web.
+//
+// - Las páginas PÚBLICAS usan URLs reales y legibles ("/sobre-nosotros",
+//   "/producto/reloj-...-alt-102") para que Google pueda indexarlas.
+// - Las páginas PRIVADAS (login y panel de administración) van cifradas en
+//   el hash ("/#/k9Fz3x..."), para que la URL no muestre el destino a simple vista.
 //
 // Método: texto -> bytes UTF-8 -> XOR con una clave -> Base64 "seguro para URL".
 // Usa solo APIs nativas del navegador (sin dependencias externas).
@@ -69,7 +73,12 @@ export function descifrarRuta(token) {
   }
 }
 
-// Devuelve el enlace (href) listo para usar en un <a>, por ejemplo "#/un-texto-raro".
+// Páginas que se abren solo con enlace cifrado. Escritas en claro ("/login") no existen.
+export const RUTAS_PRIVADAS = ['/login', '/admin'];
+
+// Devuelve el enlace (href) listo para usar en un <a>:
+//   enlaceInterno('/sobre-nosotros') -> '/sobre-nosotros'
+//   enlaceInterno('/login')          -> '/#/un-texto-raro'
 export function enlaceInterno(ruta) {
-  return `#/${cifrarRuta(ruta)}`;
+  return RUTAS_PRIVADAS.includes(ruta) ? `/#/${cifrarRuta(ruta)}` : ruta;
 }
