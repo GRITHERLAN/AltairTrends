@@ -44,6 +44,13 @@ export default function Pie() {
           © {new Date().getFullYear()} {RESPONSABLE.nombre} · {RESPONSABLE.marca}. Todos los derechos reservados. Precios
           expresados en Pesos Colombianos (COP).
         </p>
+
+        <p className="pie__legal">
+          Desarrollado y diseñado por{' '}
+          <a href="https://www.gritherweb.com" target="_blank" rel="noopener noreferrer">
+            Grither
+          </a>
+        </p>
       </div>
     </footer>
   );
