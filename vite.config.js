@@ -36,11 +36,13 @@ function politicaContenido(urlSupabase) {
   ].join('; ');
 }
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode, isSsrBuild }) => {
   const entorno = loadEnv(mode, process.cwd(), 'VITE_');
 
   return {
     plugins: [react()],
+    // La compilación para Node del prerenderizado (src/prerender.jsx) no necesita la carpeta public/.
+    build: { copyPublicDir: !isSsrBuild },
     server: {
       headers: CABECERAS_BASE,
     },

@@ -12,7 +12,7 @@ export const SITIO = {
   nombre: 'AltairTrends',
   titulo: 'AltairTrends | Hogar, juguetes y tendencias en Colombia',
   descripcion:
-    'Tienda online colombiana con productos para el hogar, juguetes, belleza, tecnología y mascotas. Precios en COP, envío a toda Colombia y atención por WhatsApp.',
+    'Tienda online colombiana: hogar, juguetes, belleza, tecnología y mascotas. Precios en COP, envío a toda Colombia y atención por WhatsApp.',
   // Imagen que aparece al compartir un enlace en WhatsApp, Instagram, Facebook...
   imagen: '/og-imagen.jpg',
 };

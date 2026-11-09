@@ -24,7 +24,8 @@ import { crearCategoria, obtenerCategoriasExtra } from '../services/categoriasSe
 import { obtenerVentasPorCategoria, obtenerVentasPorProducto } from '../services/ventasService';
 import { useAuth } from './AuthContext';
 
-const ProductosContext = createContext(null);
+// Se exporta para que el prerenderizado (src/prerender.jsx) pueda dar valores fijos.
+export const ProductosContext = createContext(null);
 
 export function ProductosProvider({ children }) {
   const { esAdmin, cargando: cargandoSesion } = useAuth();

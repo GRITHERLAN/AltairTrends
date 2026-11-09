@@ -8,7 +8,8 @@ import { createContext, useCallback, useContext, useEffect, useState } from 'rea
 import { CONFIG_SEMILLA } from '../data/configSemilla';
 import { guardarConfig, obtenerConfig } from '../services/configService';
 
-const ConfigContext = createContext(null);
+// Se exporta para que el prerenderizado (src/prerender.jsx) pueda dar valores fijos.
+export const ConfigContext = createContext(null);
 
 export function ConfigProvider({ children }) {
   // Se arranca con la configuración por defecto para que la web nunca quede sin datos.

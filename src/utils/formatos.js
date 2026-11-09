@@ -16,11 +16,14 @@ export function formatoCop(valor) {
 }
 
 // Convierte una fecha ISO en "12 ene 2025".
+// Siempre en hora de Colombia: así el HTML prerenderizado (generado en un
+// servidor con hora UTC) y el navegador muestran el mismo día.
 export function formatoFecha(fechaIso) {
   return new Date(fechaIso).toLocaleDateString('es-CO', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
+    timeZone: 'America/Bogota',
   });
 }
 

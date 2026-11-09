@@ -75,17 +75,30 @@ export function recortar(texto, maximo = 155) {
   return `${limpio.slice(0, corte > 0 ? corte : maximo - 1).replace(/[,.;:]$/, '')}…`;
 }
 
-export function useMetaPagina({ titulo, descripcion, ruta, imagen, noindex = false, schema = null }) {
-  // El schema se pasa a texto para que el efecto solo se repita si su contenido cambia.
-  const schemaTexto = schema ? JSON.stringify(schema) : null;
+// Valores finales de las etiquetas de una página.
+export function calcularMeta({ titulo, descripcion, ruta, imagen, noindex = false, schema = null }) {
+  return {
+    tituloCompleto: titulo ? `${titulo} | ${SITIO.nombre}` : SITIO.titulo,
+    textoDescripcion: descripcion || SITIO.descripcion,
+    // Las páginas noindex no llevan canónico: no deben aparecer en Google.
+    canonico: !noindex && ruta ? urlAbsoluta(ruta) : null,
+    urlImagen: urlAbsoluta(imagen || SITIO.imagen),
+    noindex,
+    // El schema se pasa a texto para que el efecto solo se repita si su contenido cambia.
+    schemaTexto: schema && !noindex ? JSON.stringify(schema) : null,
+  };
+}
+
+// Durante el prerenderizado del build (src/prerender.jsx) no hay navegador ni
+// efectos: la última página pintada deja aquí sus etiquetas para escribirlas en el HTML.
+export const metaPrerender = { actual: null };
+
+export function useMetaPagina(opciones) {
+  const meta = calcularMeta(opciones);
+  if (typeof document === 'undefined') metaPrerender.actual = meta;
+  const { tituloCompleto, textoDescripcion, canonico, urlImagen, noindex, schemaTexto } = meta;
 
   useEffect(() => {
-    const tituloCompleto = titulo ? `${titulo} | ${SITIO.nombre}` : SITIO.titulo;
-    const textoDescripcion = descripcion || SITIO.descripcion;
-    // Las páginas noindex no llevan canónico: no deben aparecer en Google.
-    const canonico = !noindex && ruta ? urlAbsoluta(ruta) : null;
-    const urlImagen = urlAbsoluta(imagen || SITIO.imagen);
-
     document.title = tituloCompleto;
     ponerMeta('name', 'description', textoDescripcion);
     ponerMeta('name', 'robots', noindex ? 'noindex, nofollow' : null);
@@ -99,6 +112,6 @@ export function useMetaPagina({ titulo, descripcion, ruta, imagen, noindex = fal
     ponerMeta('name', 'twitter:description', textoDescripcion);
     ponerMeta('name', 'twitter:image', urlImagen);
 
-    ponerSchema(noindex ? null : schemaTexto);
-  }, [titulo, descripcion, ruta, imagen, noindex, schemaTexto]);
+    ponerSchema(schemaTexto);
+  }, [tituloCompleto, textoDescripcion, canonico, urlImagen, noindex, schemaTexto]);
 }

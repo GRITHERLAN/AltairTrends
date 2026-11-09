@@ -7,7 +7,8 @@
 
 import { createContext, useCallback, useContext, useState } from 'react';
 
-const AvisosContext = createContext(null);
+// Se exporta para que el prerenderizado (src/prerender.jsx) pueda dar valores fijos.
+export const AvisosContext = createContext(null);
 
 // Milisegundos que tarda un aviso en desaparecer solo.
 const DURACION_AVISO = 4500;

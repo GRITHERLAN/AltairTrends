@@ -25,8 +25,9 @@ import { formatoFecha } from '../utils/formatos';
 import { rutaProducto, slugificar } from '../utils/slug';
 
 // Filtros iniciales con el texto de "?q=" si viene en la URL.
+// (En el prerenderizado del build no hay URL: sin búsqueda.)
 function filtrosDesdeUrl() {
-  const busqueda = new URLSearchParams(window.location.search).get('q') ?? '';
+  const busqueda = typeof window === 'undefined' ? '' : (new URLSearchParams(window.location.search).get('q') ?? '');
   return { ...FILTROS_INICIALES, nombre: busqueda.slice(0, 100) };
 }
 

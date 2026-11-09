@@ -1,7 +1,7 @@
 // ============================================================
 // App.jsx
 // Une los proveedores de datos, el layout (cabecera, pie, WhatsApp, avisos)
-// y elige qué página mostrar según la ruta del hash.
+// y elige qué página mostrar según la ruta (ver hooks/useRuta.jsx).
 // Los datos llegan de Supabase de forma asíncrona (ver services/).
 // ============================================================
 
@@ -56,12 +56,18 @@ function Paginas({ ruta }) {
 
 // Mientras llegan los datos de Supabase por PRIMERA vez se muestra un aviso de carga;
 // si el catálogo no se pudo descargar, un mensaje de error con botón para reintentar.
-function Contenido({ ruta }) {
+// "alEstarListo" avisa a main.jsx de que ya se puede cambiar la página prerenderizada por esta.
+function Contenido({ ruta, alEstarListo }) {
   const sesion = useAuth();
   const contacto = useConfig();
   const catalogo = useProductos();
+  const cargando = sesion.cargando || !contacto.listo || !catalogo.listo;
 
-  if (sesion.cargando || !contacto.listo || !catalogo.listo) {
+  useEffect(() => {
+    if (!cargando) alEstarListo?.();
+  }, [cargando, alEstarListo]);
+
+  if (cargando) {
     return (
       <section className="contenedor vacio" aria-live="polite">
         <p className="vacio__titulo">Cargando AltairTrends...</p>
@@ -92,7 +98,27 @@ function Contenido({ ruta }) {
   return <Paginas ruta={ruta} />;
 }
 
-export default function App() {
+// Todo lo visible (cabecera, contenido, pie...), sin los proveedores de datos.
+// La usa App y también el prerenderizado del build (src/prerender.jsx), que le da datos fijos.
+export function Estructura({ ruta, principalRef = null, alSaltar, alEstarListo }) {
+  return (
+    <>
+      <a className="saltar-contenido" href="#contenido" onClick={alSaltar}>
+        Saltar al contenido principal
+      </a>
+      <Cabecera rutaActual={ruta.nombre} />
+      {/* tabIndex -1: puede recibir el foco desde el código, pero no entra en el orden del Tab */}
+      <main id="contenido" className="principal" ref={principalRef} tabIndex={-1}>
+        <Contenido ruta={ruta} alEstarListo={alEstarListo} />
+      </main>
+      <Pie />
+      <BotonWhatsApp />
+      <Avisos />
+    </>
+  );
+}
+
+export default function App({ alEstarListo }) {
   const ruta = useRuta();
   const principalRef = useRef(null);
   const primeraCarga = useRef(true);
@@ -120,17 +146,7 @@ export default function App() {
       <AuthProvider>
         <ConfigProvider>
           <ProductosProvider>
-            <a className="saltar-contenido" href="#contenido" onClick={saltarAlContenido}>
-              Saltar al contenido principal
-            </a>
-            <Cabecera rutaActual={ruta.nombre} />
-            {/* tabIndex -1: puede recibir el foco desde el código, pero no entra en el orden del Tab */}
-            <main id="contenido" className="principal" ref={principalRef} tabIndex={-1}>
-              <Contenido ruta={ruta} />
-            </main>
-            <Pie />
-            <BotonWhatsApp />
-            <Avisos />
+            <Estructura ruta={ruta} principalRef={principalRef} alSaltar={saltarAlContenido} alEstarListo={alEstarListo} />
           </ProductosProvider>
         </ConfigProvider>
       </AuthProvider>

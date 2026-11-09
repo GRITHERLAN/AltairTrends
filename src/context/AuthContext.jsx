@@ -7,7 +7,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { cerrarSesion, escucharCierreSesion, iniciarSesion, obtenerSesion } from '../services/usuariosService';
 
-const AuthContext = createContext(null);
+// Se exporta para que el prerenderizado (src/prerender.jsx) pueda dar valores fijos.
+export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(null);
