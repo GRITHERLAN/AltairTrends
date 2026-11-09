@@ -9,7 +9,7 @@ import { useState } from 'react';
 import AlertaAntiguos from '../components/admin/AlertaAntiguos';
 import EditorContacto from '../components/admin/EditorContacto';
 import FiltrosAdmin from '../components/admin/FiltrosAdmin';
-import FormularioCategoria from '../components/admin/FormularioCategoria';
+import GestorCategorias from '../components/admin/GestorCategorias';
 import FormularioProducto from '../components/admin/FormularioProducto';
 import GraficoCategorias from '../components/admin/GraficoCategorias';
 import GraficoProductos from '../components/admin/GraficoProductos';
@@ -28,7 +28,7 @@ export default function PaginaAdmin() {
   // Página privada: fuera de Google.
   useMetaPagina({ titulo: 'Panel de administración', noindex: true });
   const { esAdmin } = useAuth();
-  const { productos, ventas, ventasProducto, categoriasExtra, cargadoComoAdmin, agregarCategoria, crear, actualizar, eliminar, cambiarEstado, restablecer } =
+  const { productos, ventas, ventasProducto, categoriasExtra, cargadoComoAdmin, agregarCategoria, renombrarCategoria, eliminarCategoria, crear, actualizar, eliminar, cambiarEstado, restablecer } =
     useProductos();
   const { mostrarAviso } = useAvisos();
 
@@ -78,13 +78,22 @@ export default function PaginaAdmin() {
     return resultado;
   }
 
-  // Guarda la categoría nueva desde su modal y devuelve el resultado al formulario.
-  async function guardarCategoria(nombre) {
+  // Acciones del modal "Categorías": devuelven el resultado al modal, que sigue abierto.
+  async function crearCategoria(nombre) {
     const resultado = await agregarCategoria(nombre, categorias);
-    if (resultado.ok) {
-      setModal(null);
-      mostrarAviso('exito', `Categoría "${resultado.categoria}" creada.`);
-    }
+    if (resultado.ok) mostrarAviso('exito', `Categoría "${resultado.categoria}" creada.`);
+    return resultado;
+  }
+
+  async function editarCategoria(anterior, nuevo) {
+    const resultado = await renombrarCategoria(anterior, nuevo, categorias);
+    if (resultado.ok) mostrarAviso('exito', `Categoría renombrada a "${resultado.categoria}".`);
+    return resultado;
+  }
+
+  async function borrarCategoria(nombre) {
+    const resultado = await eliminarCategoria(nombre);
+    if (resultado.ok) mostrarAviso('exito', `Categoría "${nombre}" eliminada.`);
     return resultado;
   }
 
@@ -125,7 +134,7 @@ export default function PaginaAdmin() {
             Restablecer datos de prueba
           </button>
           <button type="button" className="boton boton--secundario" onClick={() => setModal({ tipo: 'categoria' })}>
-            Crear categoría
+            Categorías
           </button>
           <button type="button" className="boton boton--primario" onClick={() => setModal({ tipo: 'formulario', producto: null })}>
             + Crear nuevo producto
@@ -170,7 +179,16 @@ export default function PaginaAdmin() {
       {modal && modal.tipo === 'formulario' && (
         <FormularioProducto producto={modal.producto} productos={productos} categorias={categorias} onGuardar={guardarProducto} onCerrar={() => setModal(null)} />
       )}
-      {modal && modal.tipo === 'categoria' && <FormularioCategoria categorias={categorias} onGuardar={guardarCategoria} onCerrar={() => setModal(null)} />}
+      {modal && modal.tipo === 'categoria' && (
+        <GestorCategorias
+          categorias={categorias}
+          productos={productos}
+          onCrear={crearCategoria}
+          onRenombrar={editarCategoria}
+          onEliminar={borrarCategoria}
+          onCerrar={() => setModal(null)}
+        />
+      )}
       {modal && modal.tipo === 'borrar' && (
         <ModalConfirmacion
           titulo="Borrar producto"

@@ -20,7 +20,7 @@ import {
   obtenerProductos,
   restablecerProductos,
 } from '../services/productosService';
-import { crearCategoria, obtenerCategoriasExtra } from '../services/categoriasService';
+import { crearCategoria, eliminarCategoria as eliminarCategoriaServicio, obtenerCategoriasExtra, renombrarCategoria as renombrarCategoriaServicio } from '../services/categoriasService';
 import { obtenerVentasPorCategoria, obtenerVentasPorProducto } from '../services/ventasService';
 import { useAuth } from './AuthContext';
 
@@ -85,6 +85,26 @@ export function ProductosProvider({ children }) {
     return resultado;
   }
 
+  // Renombra una categoría (también en los productos que la usan).
+  async function renombrarCategoria(anterior, nuevo, existentes) {
+    const resultado = await renombrarCategoriaServicio(anterior, nuevo, existentes);
+    if (resultado.ok) {
+      setProductos((actuales) => actuales.map((p) => (p.categoria === anterior ? { ...p, categoria: resultado.categoria } : p)));
+      setCategoriasExtra((actuales) => actuales.map((c) => (c === anterior ? resultado.categoria : c)));
+    }
+    return resultado;
+  }
+
+  // Elimina una categoría que no tenga productos.
+  async function eliminarCategoria(nombre) {
+    if (productos.some((p) => p.categoria === nombre)) {
+      return { ok: false, error: 'No se puede eliminar: hay productos en esta categoría. Cámbialos de categoría primero.' };
+    }
+    const resultado = await eliminarCategoriaServicio(nombre);
+    if (resultado.ok) setCategoriasExtra((actuales) => actuales.filter((c) => c !== nombre));
+    return resultado;
+  }
+
   // Cada acción llama al servicio y, si todo salió bien, actualiza el estado local.
   async function crear(datos) {
     const resultado = await crearProducto(datos, productos);
@@ -125,7 +145,7 @@ export function ProductosProvider({ children }) {
 
   return (
     <ProductosContext.Provider
-      value={{ productos, ventas, ventasProducto, categoriasExtra, cargando, listo, cargadoComoAdmin, error, recargar, agregarCategoria, crear, actualizar, eliminar, cambiarEstado, comprar, restablecer }}
+      value={{ productos, ventas, ventasProducto, categoriasExtra, cargando, listo, cargadoComoAdmin, error, recargar, agregarCategoria, renombrarCategoria, eliminarCategoria, crear, actualizar, eliminar, cambiarEstado, comprar, restablecer }}
     >
       {children}
     </ProductosContext.Provider>
